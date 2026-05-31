@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodMatch — Feel the Music</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+  
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <span class="logo-icon">🎵</span>
+      <span class="logo-text">MoodMatch</span>
+    </div>
+    <div class="nav-links">
+      <a href="/" class="nav-link active">Upload</a>
+      <a href="/history" class="nav-link">History</a>
+      <a href="/dashboard" class="nav-link">Analytics</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="main">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        AI-Powered Emotion Detection
+      </div>
+      <h1 class="hero-title">
+        Your Face<br/>
+        <span class="gradient-text">Chooses Your Music</span>
+      </h1>
+      <p class="hero-sub">
+        Upload a video. We detect your emotions using facial AI.<br/>
+        Get a perfectly matched playlist in seconds.
+      </p>
+    </section>
+
+    <!-- Upload Card -->
+    <section class="upload-section">
+      <div class="upload-card" id="uploadCard">
+        <div class="upload-zone" id="dropZone">
+          <div class="upload-icon" id="uploadIcon">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="30" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4"/>
+              <path d="M32 42V22M32 22L24 30M32 22L40 30" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M20 46H44" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="upload-text">
+            <p class="upload-primary">Drop your video here</p>
+            <p class="upload-secondary">or click to browse</p>
+            <p class="upload-formats">MP4, MOV, AVI, MKV, WEBM — up to 200MB</p>
+          </div>
+          <input type="file" id="fileInput" accept="video/*" hidden />
+          <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+            Choose Video
+          </button>
+        </div>
+
+        <!-- File selected state -->
+        <div class="file-preview" id="filePreview" style="display:none">
+          <div class="file-info">
+            <div class="file-icon">🎬</div>
+            <div class="file-details">
+              <p class="file-name" id="fileName"></p>
+              <p class="file-size" id="fileSize"></p>
+            </div>
+            <button class="btn-remove" id="removeFile">✕</button>
+          </div>
+          <video class="video-preview" id="videoPreview" muted playsinline></video>
+          <button class="btn-analyze" id="analyzeBtn">
+            <span class="btn-text">Analyze My Mood</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Processing overlay -->
+      <div class="processing-overlay" id="processingOverlay" style="display:none">
+        <div class="processing-card">
+          <div class="processing-animation">
+            <div class="emotion-rings">
+              <div class="ring ring-1"></div>
+              <div class="ring ring-2"></div>
+              <div class="ring ring-3"></div>
+            </div>
+            <div class="face-icon">😐</div>
+          </div>
+          <h3 class="processing-title" id="processingTitle">Uploading your video...</h3>
+          <p class="processing-sub" id="processingSub">Please wait while we work our magic</p>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="processing-steps">
+            <div class="step" id="step1">
+              <span class="step-dot"></span> Uploading video
+            </div>
+            <div class="step" id="step2">
+              <span class="step-dot"></span> Detecting faces
+            </div>
+            <div class="step" id="step3">
+              <span class="step-dot"></span> Analyzing emotions
+            </div>
+            <div class="step" id="step4">
+              <span class="step-dot"></span> Matching songs
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>AI Emotion Engine</h3>
+        <p>DeepFace analyzes every frame, detecting 7 distinct emotions with high accuracy</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3>Smart Matching</h3>
+        <p>Vector-based similarity matching picks songs that truly resonate with your mood</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Emotion Timeline</h3>
+        <p>See how your emotions evolve throughout the video with beautiful visualizations</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Results</h3>
+        <p>Get your personalized playlist in seconds, not minutes</p>
+      </div>
+    </section>
+  </main>
+  <footer class="copyright-footer">
+  © 2026 Harshit Seth. All Rights Reserved.
+</footer>
+
+<script src="/static/js/upload.js"></script>
+
+</body>
+</html>

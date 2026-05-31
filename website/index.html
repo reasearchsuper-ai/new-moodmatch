@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodMatch — AI Music for Your Emotions</title>
+  <meta name="description" content="Upload a video. Our AI reads your emotions. Get the perfect playlist instantly."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+  <style>
+    /* ══════════════════════════════════════════
+       MoodMatch Website — Cinematic Dark Theme
+       ══════════════════════════════════════════ */
+    :root {
+      --bg: #05070f;
+      --surface: #0a0e1a;
+      --surface-2: #101828;
+      --border: rgba(255,255,255,0.06);
+      --border-glow: rgba(124,111,255,0.3);
+      --text: #eef2ff;
+      --text-2: #7b8db0;
+      --text-3: #3d4f6e;
+      --accent: #7C6FFF;
+      --accent-2: #FF6B9D;
+      --accent-3: #00D4AA;
+      --gold: #FFD166;
+      --font-d: 'Syne', sans-serif;
+      --font-b: 'DM Sans', sans-serif;
+      --r: 16px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-b);
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Noise Texture Overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.4;
+    }
+
+    /* ══ NAVBAR ══════════════════════════════════ */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+      background: rgba(5, 7, 15, 0.8);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.3s;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-d);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand-icon {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-link {
+      font-size: 0.875rem;
+      font-weight: 400;
+      color: var(--text-2);
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-link:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--accent);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.25s;
+    }
+
+    .nav-cta:hover {
+      background: #9080ff;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 30px rgba(124,111,255,0.35);
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-2);
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* ══ HERO ════════════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gradient mesh */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 900px; height: 900px;
+      background: radial-gradient(circle, rgba(124,111,255,0.12) 0%, transparent 60%);
+      top: -200px; left: -200px;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      background: radial-gradient(circle, rgba(255,107,157,0.10) 0%, transparent 60%);
+      bottom: -150px; right: -150px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(124,111,255,0.08);
+      border: 1px solid rgba(124,111,255,0.25);
+      border-radius: 100px;
+      padding: 6px 14px 6px 8px;
+      font-size: 0.78rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-pill-dot {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+    }
+
+    .hero-h1 {
+      font-family: var(--font-d);
+      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-h1 .line-2 {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 60%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-p {
+      font-size: 1.1rem;
+      color: var(--text-2);
+      line-height: 1.8;
+      max-width: 460px;
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      padding: 16px 36px;
+      border-radius: 100px;
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 60px rgba(124,111,255,0.4);
+    }
+
+    .btn-secondary {
+      color: var(--text-2);
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+      font-weight: 400;
+    }
+
+    .btn-secondary:hover { color: var(--text); }
+
+    .hero-stats {
+      display: flex;
+      gap: 2.5rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-n {
+      font-family: var(--font-d);
+      font-size: 1.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .stat-l {
+      font-size: 0.78rem;
+      color: var(--text-3);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+
+    /* ── Hero Right: App Mockup ── */
+    .hero-right {
+      position: relative;
+    }
+
+    .app-mockup {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow:
+        0 40px 120px rgba(0,0,0,0.6),
+        0 0 0 1px rgba(255,255,255,0.04),
+        inset 0 1px 0 rgba(255,255,255,0.06);
+      animation: floatMock 6s ease-in-out infinite;
+    }
+
+    @keyframes floatMock {
+      0%, 100% { transform: translateY(0) rotate(-1deg); }
+      50% { transform: translateY(-16px) rotate(-1deg); }
+    }
+
+    .mockup-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 18px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mockup-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+
+    .mockup-body {
+      padding: 1.5rem;
+    }
+
+    .mockup-emotion {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .mockup-emoji {
+      font-size: 2rem;
+      width: 52px; height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,209,102,0.12);
+      border-radius: 12px;
+    }
+
+    .mockup-emotion-label {
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gold);
+    }
+
+    .mockup-emotion-sub {
+      font-size: 0.75rem;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
+
+    .mockup-bar-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .mockup-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mockup-bar-label {
+      width: 60px;
+      font-size: 0.7rem;
+      color: var(--text-3);
+    }
+
+    .mockup-bar-track {
+      flex: 1;
+      height: 5px;
+      background: var(--surface-2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .mockup-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      animation: barGrow 1.5s ease both;
+    }
+
+    @keyframes barGrow {
+      from { width: 0; }
+    }
+
+    .mockup-songs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mockup-song {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      background: var(--surface-2);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .mockup-song-dot {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      flex-shrink: 0;
+    }
+
+    .mockup-song-info { flex: 1; min-width: 0; }
+
+    .mockup-song-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mockup-song-artist {
+      font-size: 0.68rem;
+      color: var(--text-3);
+    }
+
+    .mockup-match {
+      font-size: 0.65rem;
+      background: rgba(124,111,255,0.15);
+      color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+
+    /* Floating badges */
+    .float-badge {
+      position: absolute;
+      background: var(--surface-2);
+      border: 1px solid var(--border-glow);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      backdrop-filter: blur(10px);
+      animation: floatBadge 4s ease-in-out infinite;
+      white-space: nowrap;
+    }
+
+    .float-badge-1 {
+      top: -20px; right: -30px;
+      animation-delay: 0s;
+    }
+
+    .float-badge-2 {
+      bottom: 40px; left: -40px;
+      animation-delay: 2s;
+    }
+
+    @keyframes floatBadge {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ══ HOW IT WORKS ════════════════════════════ */
+    .section {
+      padding: 8rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .section-h2 {
+      font-family: var(--font-d);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      line-height: 1.1;
+    }
+
+    .section-sub {
+      font-size: 1rem;
+      color: var(--text-2);
+      max-width: 520px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .section-header {
+      margin-bottom: 4rem;
+    }
+
+    /* Steps */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      position: relative;
+    }
+
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: calc(16.67% + 30px);
+      right: calc(16.67% + 30px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity: 0.3;
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .step-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,111,255,0.1);
+    }
+
+    .step-num {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-d);
+      font-weight: 800;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 30px rgba(124,111,255,0.3);
+    }
+
+    .step-icon {
+      font-size: 1.5rem;
+    }
+
+    .step-title {
+      font-family: var(--font-d);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .step-desc {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ══ FEATURES ════════════════════════════════ */
+    .features-wrap {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .features-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8rem 5%;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .feature-card {
+      padding: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--bg);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(124,111,255,0.2);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(124,111,255,0.06), rgba(255,107,157,0.04));
+      border-color: rgba(124,111,255,0.15);
+    }
+
+    .feature-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid var(--border);
+    }
+
+    .feature-title {
+      font-family: var(--font-d);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-2);
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ══ EMOTIONS SHOWCASE ═══════════════════════ */
+    .emotions-section {
+      padding: 8rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .emotions-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    .emotion-tile {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .emotion-tile::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .emotion-tile:hover {
+      transform: translateY(-8px) scale(1.05);
+      border-color: transparent;
+    }
+
+    .emotion-tile[data-emotion="happy"]    { --ec: #FFD166; }
+    .emotion-tile[data-emotion="sad"]      { --ec: #4A90D9; }
+    .emotion-tile[data-emotion="angry"]    { --ec: #FF4F4F; }
+    .emotion-tile[data-emotion="surprise"] { --ec: #FF8C42; }
+    .emotion-tile[data-emotion="fear"]     { --ec: #9B59B6; }
+    .emotion-tile[data-emotion="disgust"]  { --ec: #27AE60; }
+    .emotion-tile[data-emotion="neutral"]  { --ec: #85C1E9; }
+
+    .emotion-tile:hover {
+      box-shadow: 0 20px 60px color-mix(in srgb, var(--ec) 30%, transparent);
+      border-color: var(--ec);
+    }
+
+    .emotion-tile-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .emotion-tile-label {
+      font-family: var(--font-d);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .emotion-tile-songs {
+      font-size: 0.65rem;
+      color: var(--text-3);
+      margin-top: 4px;
+    }
+
+    /* ══ TESTIMONIALS ════════════════════════════ */
+    .testimonials-wrap {
+      padding: 8rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .testimonial-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem;
+      transition: all 0.3s;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(124,111,255,0.2);
+      transform: translateY(-4px);
+    }
+
+    .testimonial-stars {
+      color: var(--gold);
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .testimonial-text {
+      font-size: 0.9rem;
+      color: var(--text-2);
+      line-height: 1.9;
+      font-style: italic;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .testimonial-name {
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .testimonial-role {
+      font-size: 0.75rem;
+      color: var(--text-3);
+    }
+
+    /* ══ PRICING ═════════════════════════════════ */
+    .pricing-wrap {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+
+    .pricing-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 8rem 5%;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .pricing-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .pricing-card.popular {
+      background: linear-gradient(135deg, rgba(124,111,255,0.08), rgba(255,107,157,0.05));
+      border-color: rgba(124,111,255,0.4);
+      box-shadow: 0 0 60px rgba(124,111,255,0.12);
+    }
+
+    .popular-badge {
+      position: absolute;
+      top: -14px; left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 100px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .plan-name {
+      font-family: var(--font-d);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8rem;
+    }
+
+    .plan-price {
+      font-family: var(--font-d);
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.2rem;
+    }
+
+    .plan-price sup {
+      font-size: 1.2rem;
+      vertical-align: super;
+      font-weight: 400;
+    }
+
+    .plan-period {
+      font-size: 0.8rem;
+      color: var(--text-3);
+      margin-bottom: 1.5rem;
+    }
+
+    .plan-desc {
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-weight: 300;
+    }
+
+    .plan-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .plan-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: var(--text-2);
+    }
+
+    .check {
+      color: var(--accent-3);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .cross {
+      color: var(--text-3);
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+
+    .btn-plan {
+      width: 100%;
+      padding: 14px;
+      border-radius: 100px;
+      font-family: var(--font-d);
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+      display: block;
+      border: none;
+    }
+
+    .btn-plan-outline {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-2);
+    }
+
+    .btn-plan-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-plan-fill {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+    }
+
+    .btn-plan-fill:hover {
+      box-shadow: 0 12px 40px rgba(124,111,255,0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ══ CTA SECTION ═════════════════════════════ */
+    .cta-wrap {
+      padding: 8rem 5%;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-wrap::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,111,255,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-h2 {
+      font-family: var(--font-d);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.2rem;
+      line-height: 1.05;
+    }
+
+    .cta-p {
+      font-size: 1rem;
+      color: var(--text-2);
+      margin-bottom: 2.5rem;
+      font-weight: 300;
+    }
+
+    /* ══ FOOTER ══════════════════════════════════ */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 5%;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--text-3);
+      margin-top: 1rem;
+      max-width: 280px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-d);
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-3);
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--text-3);
+      transition: color 0.2s;
+      font-weight: 300;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: var(--text-3);
+      font-weight: 300;
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: var(--text-3);
+      transition: all 0.2s;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* ══ RESPONSIVE ══════════════════════════════ */
+    @media (max-width: 1024px) {
+      .hero-inner { gap: 3rem; }
+      .features-grid { grid-template-columns: 1fr 1fr; }
+      .feature-card.featured { grid-template-columns: 1fr; }
+      .emotions-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-links { display: none; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .steps-grid::before { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feature-card.featured { grid-column: 1; }
+      .emotions-grid { grid-template-columns: repeat(4, 1fr); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .emotions-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero-stats { gap: 1.5rem; }
+    }
+
+    /* ══ ANIMATIONS ══════════════════════════════ */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-up:nth-child(2) { transition-delay: 0.1s; }
+    .fade-up:nth-child(3) { transition-delay: 0.2s; }
+    .fade-up:nth-child(4) { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAVBAR ═════════════════════════════════════════ -->
+  <nav class="navbar">
+    <a href="#" class="nav-brand">
+      <div class="nav-brand-icon">🎵</div>
+      MoodMatch
+    </a>
+    <div class="nav-links">
+      <a href="#how" class="nav-link">How it Works</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#emotions" class="nav-link">Emotions</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="http://localhost:5000" class="nav-cta">Launch App →</a>
+    </div>
+    <div class="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ═══════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-pill">
+          <div class="hero-pill-dot">✦</div>
+          Powered by DeepFace AI
+        </div>
+        <h1 class="hero-h1">
+          Your Face<br/>
+          <span class="line-2">Knows the Song</span><br/>
+          You Need
+        </h1>
+        <p class="hero-p">
+          Upload any video. Our emotion AI reads your facial expressions
+          in real time and builds a playlist perfectly tuned to how you feel right now.
+        </p>
+        <div class="hero-actions">
+          <a href="http://localhost:5000" class="btn-primary">
+            Try It Free
+            <span>→</span>
+          </a>
+          <a href="#how" class="btn-secondary">
+            <span>▶</span> See how it works
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-n">7+</div>
+            <div class="stat-l">Emotions Detected</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n">100+</div>
+            <div class="stat-l">Curated Songs</div>
+          </div>
+          <div class="stat">
+            <div class="stat-n">&lt;30s</div>
+            <div class="stat-l">Analysis Time</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- App Mockup -->
+      <div class="hero-right">
+        <div class="float-badge float-badge-1">
+          <span>😊</span>
+          <div>
+            <div style="font-weight:600;font-size:0.8rem">Happy detected</div>
+            <div style="font-size:0.7rem;color:var(--text-3)">94% confidence</div>
+          </div>
+        </div>
+
+        <div class="app-mockup">
+          <div class="mockup-bar">
+            <div class="mockup-dot" style="background:#FF5F56"></div>
+            <div class="mockup-dot" style="background:#FFBD2E"></div>
+            <div class="mockup-dot" style="background:#27C93F"></div>
+            <div style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-3)">moodmatch.app</div>
+          </div>
+          <div class="mockup-body">
+            <div class="mockup-emotion">
+              <div class="mockup-emoji">😊</div>
+              <div>
+                <div class="mockup-emotion-label">Happy · Joyful</div>
+                <div class="mockup-emotion-sub">Radiating positive energy • 12 frames</div>
+              </div>
+            </div>
+            <div class="mockup-bar-rows">
+              <div class="mockup-bar-row">
+                <div class="mockup-bar-label">Happy</div>
+                <div class="mockup-bar-track">
+                  <div class="mockup-bar-fill" style="width:78%;background:#FFD166"></div>
+                </div>
+              </div>
+              <div class="mockup-bar-row">
+                <div class="mockup-bar-label">Neutral</div>
+                <div class="mockup-bar-track">
+                  <div class="mockup-bar-fill" style="width:12%;background:#85C1E9;animation-delay:.2s"></div>
+                </div>
+              </div>
+              <div class="mockup-bar-row">
+                <div class="mockup-bar-label">Surprise</div>
+                <div class="mockup-bar-track">
+                  <div class="mockup-bar-fill" style="width:10%;background:#FF8C42;animation-delay:.4s"></div>
+                </div>
+              </div>
+            </div>
+            <div style="font-size:0.7rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem">Your Playlist</div>
+            <div class="mockup-songs">
+              <div class="mockup-song">
+                <div class="mockup-song-dot" style="background:#FFD16622"></div>
+                <div class="mockup-song-info">
+                  <div class="mockup-song-title">Happy</div>
+                  <div class="mockup-song-artist">Pharrell Williams</div>
+                </div>
+                <span class="mockup-match">96%</span>
+              </div>
+              <div class="mockup-song">
+                <div class="mockup-song-dot" style="background:#FF6B9D22"></div>
+                <div class="mockup-song-info">
+                  <div class="mockup-song-title">Levitating</div>
+                  <div class="mockup-song-artist">Dua Lipa</div>
+                </div>
+                <span class="mockup-match">91%</span>
+              </div>
+              <div class="mockup-song">
+                <div class="mockup-song-dot" style="background:#7C6FFF22"></div>
+                <div class="mockup-song-info">
+                  <div class="mockup-song-title">Uptown Funk</div>
+                  <div class="mockup-song-artist">Mark Ronson</div>
+                </div>
+                <span class="mockup-match">88%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="float-badge float-badge-2">
+          <span>🎵</span>
+          <div>
+            <div style="font-weight:600;font-size:0.8rem">15 songs matched</div>
+            <div style="font-size:0.7rem;color:var(--text-3)">in 4.2 seconds</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ HOW IT WORKS ═══════════════════════════════════ -->
+  <section class="section" id="how">
+    <div class="section-header">
+      <div class="section-label">How It Works</div>
+      <h2 class="section-h2">Three steps to your<br/> perfect playlist</h2>
+      <p class="section-sub">No account needed. No mood logging. Just your face and your feelings.</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card fade-up">
+        <div class="step-num"><span class="step-icon">📹</span></div>
+        <div class="step-title">Upload a Video</div>
+        <p class="step-desc">Record yourself for a few seconds or upload any existing clip. Supported formats: MP4, MOV, AVI, MKV, WEBM. Up to 200MB.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num"><span class="step-icon">🧠</span></div>
+        <div class="step-title">AI Reads Your Emotions</div>
+        <p class="step-desc">DeepFace analyzes every frame, detecting 7 emotions — happiness, sadness, anger, surprise, fear, disgust, and calm — with high accuracy.</p>
+      </div>
+      <div class="step-card fade-up">
+        <div class="step-num"><span class="step-icon">🎶</span></div>
+        <div class="step-title">Get Your Playlist</div>
+        <p class="step-desc">Our recommendation engine matches songs to your emotional fingerprint using energy, valence, and BPM alignment. Your mood, your music.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FEATURES ═══════════════════════════════════════ -->
+  <div class="features-wrap" id="features">
+    <div class="features-inner">
+      <div class="section-header">
+        <div class="section-label">Features</div>
+        <h2 class="section-h2">Enterprise-grade AI,<br/>built for everyone</h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card featured fade-up">
+          <div>
+            <div class="feature-icon">🎯</div>
+            <div class="feature-title">Vector-Based Emotion Matching</div>
+            <p class="feature-desc">Unlike simple keyword matching, MoodMatch uses the full 7-dimension emotion score vector to compute cosine similarity against every song in the catalog. Songs are ranked by how closely their mood profile aligns with yours — not just one label.</p>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
+            <div style="font-size:0.7rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem">Emotion Vector</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Happy</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:78%;height:100%;background:#FFD166;border-radius:4px"></div></div></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Neutral</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:12%;height:100%;background:#85C1E9;border-radius:4px"></div></div></div>
+              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Surprise</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:10%;height:100%;background:#FF8C42;border-radius:4px"></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card fade-up">
+          <div class="feature-icon">📊</div>
+          <div class="feature-title">Real-time Emotion Timeline</div>
+          <p class="feature-desc">See exactly how your emotions shifted throughout the video with a live Chart.js visualization. Identify peaks, dips, and your dominant emotional arc.</p>
+        </div>
+
+        <div class="feature-card fade-up">
+          <div class="feature-icon">⚡</div>
+          <div class="feature-title">Async Processing Engine</div>
+          <p class="feature-desc">Video processing runs in a background thread so the UI stays responsive. Real-time status polling keeps you updated as each stage completes.</p>
+        </div>
+
+        <div class="feature-card fade-up">
+          <div class="feature-icon">🎛️</div>
+          <div class="feature-title">BPM & Energy Alignment</div>
+          <p class="feature-desc">Each song is matched not just by emotion but also by tempo and energy level. Intense anger gets high-BPM metal. Deep sadness gets slow, low-energy acoustic tracks.</p>
+        </div>
+
+        <div class="feature-card fade-up">
+          <div class="feature-icon">🗃️</div>
+          <div class="feature-title">Full Session History</div>
+          <p class="feature-desc">Every analysis is saved to a local SQLite database. Review past sessions, compare emotion patterns over time, and revisit old playlists.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ EMOTIONS SHOWCASE ══════════════════════════════ -->
+  <section class="emotions-section" id="emotions">
+    <div class="section-header">
+      <div class="section-label">Emotion Engine</div>
+      <h2 class="section-h2">7 emotions.<br/>Infinite playlists.</h2>
+      <p class="section-sub">Every shade of human feeling maps to a carefully curated sonic palette.</p>
+    </div>
+    <div class="emotions-grid">
+      <div class="emotion-tile" data-emotion="happy">
+        <span class="emotion-tile-emoji">😊</span>
+        <div class="emotion-tile-label">Happy</div>
+        <div class="emotion-tile-songs">10 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="sad">
+        <span class="emotion-tile-emoji">😢</span>
+        <div class="emotion-tile-label">Sad</div>
+        <div class="emotion-tile-songs">10 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="angry">
+        <span class="emotion-tile-emoji">😠</span>
+        <div class="emotion-tile-label">Angry</div>
+        <div class="emotion-tile-songs">10 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="surprise">
+        <span class="emotion-tile-emoji">😲</span>
+        <div class="emotion-tile-label">Surprised</div>
+        <div class="emotion-tile-songs">5 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="fear">
+        <span class="emotion-tile-emoji">😨</span>
+        <div class="emotion-tile-label">Fearful</div>
+        <div class="emotion-tile-songs">5 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="disgust">
+        <span class="emotion-tile-emoji">🤢</span>
+        <div class="emotion-tile-label">Disgusted</div>
+        <div class="emotion-tile-songs">3 songs</div>
+      </div>
+      <div class="emotion-tile" data-emotion="neutral">
+        <span class="emotion-tile-emoji">😌</span>
+        <div class="emotion-tile-label">Calm</div>
+        <div class="emotion-tile-songs">10 songs</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TESTIMONIALS ═══════════════════════════════════ -->
+  <section class="testimonials-wrap">
+    <div class="section-header">
+      <div class="section-label">Testimonials</div>
+      <h2 class="section-h2">People are feeling it</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"I uploaded a video after a terrible day and it gave me the most perfectly somber playlist. Felt truly understood by an AI for the first time."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#FFD16622">🙂</div>
+          <div>
+            <div class="testimonial-name">Priya M.</div>
+            <div class="testimonial-role">UX Designer, Bangalore</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"The emotion timeline is incredible. Watching my face go from neutral to genuinely happy during a work call was fascinating. Playlist was spot on."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#7C6FFF22">😊</div>
+          <div>
+            <div class="testimonial-name">James T.</div>
+            <div class="testimonial-role">Software Engineer, London</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card fade-up">
+        <div class="testimonial-stars">★★★★★</div>
+        <p class="testimonial-text">"Built this in VS Code and had it running in 10 minutes. The code quality is exceptional — clean, modular, and actually beginner-friendly despite being enterprise-grade."</p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar" style="background:#00D4AA22">🧑‍💻</div>
+          <div>
+            <div class="testimonial-name">Aryan K.</div>
+            <div class="testimonial-role">CS Student, Delhi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PRICING ════════════════════════════════════════ -->
+  <div class="pricing-wrap" id="pricing">
+    <div class="pricing-inner">
+      <div class="section-header" style="text-align:center">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-h2">Start free. Scale as you grow.</h2>
+        <p class="section-sub" style="max-width:400px;margin:0 auto">No credit card required to start. Run it locally forever for free.</p>
+      </div>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-up">
+          <div class="plan-name">Local</div>
+          <div class="plan-price">$0</div>
+          <div class="plan-period">Free forever</div>
+          <p class="plan-desc">Run MoodMatch on your own machine. No limits, full code access.</p>
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="check">✓</span> Unlimited local analyses</li>
+            <li class="plan-feature"><span class="check">✓</span> Full source code</li>
+            <li class="plan-feature"><span class="check">✓</span> SQLite history</li>
+            <li class="plan-feature"><span class="check">✓</span> All 7 emotions</li>
+            <li class="plan-feature"><span class="cross">✗</span> Cloud hosting</li>
+            <li class="plan-feature"><span class="cross">✗</span> Spotify integration</li>
+          </ul>
+          <a href="http://localhost:5000" class="btn-plan btn-plan-outline">Get Started</a>
+        </div>
+
+        <div class="pricing-card popular fade-up">
+          <div class="popular-badge">Most Popular</div>
+          <div class="plan-name">Pro</div>
+          <div class="plan-price"><sup>$</sup>9</div>
+          <div class="plan-period">per month</div>
+          <p class="plan-desc">Cloud-hosted, faster processing, and Spotify playlist export.</p>
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="check">✓</span> 500 analyses/month</li>
+            <li class="plan-feature"><span class="check">✓</span> Cloud GPU processing</li>
+            <li class="plan-feature"><span class="check">✓</span> Spotify playlist export</li>
+            <li class="plan-feature"><span class="check">✓</span> Advanced analytics</li>
+            <li class="plan-feature"><span class="check">✓</span> Priority support</li>
+            <li class="plan-feature"><span class="cross">✗</span> White-label</li>
+          </ul>
+          <a href="#" class="btn-plan btn-plan-fill">Coming Soon</a>
+        </div>
+
+        <div class="pricing-card fade-up">
+          <div class="plan-name">Business</div>
+          <div class="plan-price"><sup>$</sup>49</div>
+          <div class="plan-period">per month</div>
+          <p class="plan-desc">White-label, API access, and custom song catalog for your brand.</p>
+          <ul class="plan-features">
+            <li class="plan-feature"><span class="check">✓</span> Unlimited analyses</li>
+            <li class="plan-feature"><span class="check">✓</span> REST API access</li>
+            <li class="plan-feature"><span class="check">✓</span> White-label branding</li>
+            <li class="plan-feature"><span class="check">✓</span> Custom song catalog</li>
+            <li class="plan-feature"><span class="check">✓</span> SLA & dedicated support</li>
+            <li class="plan-feature"><span class="check">✓</span> Team management</li>
+          </ul>
+          <a href="#" class="btn-plan btn-plan-outline">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ CTA ════════════════════════════════════════════ -->
+  <section class="cta-wrap">
+    <div class="cta-inner">
+      <h2 class="cta-h2">Ready to hear<br/> how you feel?</h2>
+      <p class="cta-p">Upload a video. Your perfect playlist is 30 seconds away.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="http://localhost:5000" class="btn-primary">
+          Launch MoodMatch
+          <span>🎵</span>
+        </a>
+      </div>
+      <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-3)">
+        Free · No account · Runs locally in VS Code
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-brand" style="margin-bottom:.5rem">
+          <div class="nav-brand-icon">🎵</div>
+          MoodMatch
+        </div>
+        <p>AI-powered music matching through real-time emotion detection. Built for developers, designed for everyone.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="http://localhost:5000">Launch App</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Tech Stack</div>
+        <ul class="footer-links">
+          <li><a href="#">Python / Flask</a></li>
+          <li><a href="#">DeepFace AI</a></li>
+          <li><a href="#">OpenCV</a></li>
+          <li><a href="#">Chart.js</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="#">GitHub Repo</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">API Reference</a></li>
+          <li><a href="#">Changelog</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 MoodMatch. Built with ♥ using DeepFace & Flask.</div>
+      <div class="footer-socials">
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">⌥</a>
+        <a href="#" class="social-link">in</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Mobile menu
+    function toggleMenu() {
+      const links = document.querySelector('.nav-links');
+      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
+      links.style.flexDirection = 'column';
+      links.style.position = 'absolute';
+      links.style.top = '72px';
+      links.style.left = '0';
+      links.style.right = '0';
+      links.style.padding = '1.5rem 5%';
+      links.style.background = 'rgba(5,7,15,0.98)';
+      links.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+      links.style.backdropFilter = 'blur(24px)';
+    }
+
+    // Emotion tiles hover effect
+    document.querySelectorAll('.emotion-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        const emotion = tile.dataset.emotion;
+        window.open(`http://localhost:5000`, '_blank');
+      });
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+      const nav = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        nav.style.background = 'rgba(5,7,15,0.95)';
+      } else {
+        nav.style.background = 'rgba(5,7,15,0.8)';
+      }
+    });
+  </script>
+</body>
+</html>

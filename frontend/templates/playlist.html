@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodMatch — Your Playlist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <link rel="stylesheet" href="/static/css/playlist.css" />
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-orbs">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-logo">
+      <span class="logo-icon">🎵</span>
+      <span class="logo-text">MoodMatch</span>
+    </div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">↑ New Analysis</a>
+      <a href="/history" class="nav-link">History</a>
+      <a href="/dashboard" class="nav-link">Analytics</a>
+    </div>
+  </nav>
+
+  <main class="playlist-main">
+
+    <!-- Loading -->
+    <div class="loading-state" id="loadingState">
+      <div class="emotion-rings">
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+      </div>
+      <p>Loading your results...</p>
+    </div>
+
+    <!-- Results -->
+    <div id="resultsContainer" style="display:none">
+
+      <!-- 1. Emotion Summary -->
+      <section class="emotion-hero" id="emotionHero">
+        <div class="emotion-display">
+          <div class="primary-emotion-badge">
+            <span class="emotion-emoji" id="emotionEmoji">😊</span>
+            <div class="emotion-info">
+              <span class="emotion-label" id="emotionLabel">Happy</span>
+              <span class="mood-label" id="moodLabel">Joyful</span>
+            </div>
+          </div>
+          <div class="mood-message" id="moodMessage"></div>
+        </div>
+        <div class="emotion-chart-wrap">
+          <canvas id="emotionRadar" width="280" height="280"></canvas>
+        </div>
+        <div class="emotion-bars" id="emotionBars"></div>
+      </section>
+
+      <!-- 2. Emotion Line Chart -->
+      <section class="timeline-section">
+        <h2 class="section-title">Emotion Chart Over Time</h2>
+        <p style="font-size:0.82rem;color:var(--text-3);margin-bottom:1rem">Hover over chart to see exact time ranges</p>
+        <div class="timeline-chart-wrap">
+          <canvas id="timelineChart" height="120"></canvas>
+        </div>
+      </section>
+
+      <!-- 3. CORE: Mood → Song Timeline -->
+      <section class="mood-timeline-section" id="moodSongTimeline">
+        <!-- Filled by JS -->
+      </section>
+
+      <!-- 4. Full Playlist -->
+      <section class="playlist-section">
+        <div class="playlist-header">
+          <div>
+            <h2 class="section-title" id="playlistTitle">Full Playlist</h2>
+            <p class="playlist-desc" id="playlistDesc"></p>
+          </div>
+          <div class="playlist-controls">
+            <button class="btn-control" id="shuffleBtn">🔀 Shuffle</button>
+            <button class="btn-control" id="shareBtn">📤 Share</button>
+          </div>
+        </div>
+        <div class="song-list" id="songList"></div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ══ AI ASSISTANT FAB ══ -->
+  <div class="ai-fab" id="aiFab">
+    <div class="ai-tooltip" id="aiTooltip">
+
+      <!-- Header -->
+      <div class="ai-tooltip-header">
+        <div class="ai-avatar">🤖</div>
+        <div>
+          <div class="ai-name">MoodAI Assistant</div>
+          <div class="ai-status">● Online — ready to help</div>
+        </div>
+      </div>
+
+      <!-- Greeting message -->
+      <div class="ai-message" id="aiMessage">
+        Hi! I analyzed your video and matched songs to your emotions.
+        Ask me anything about your results! 👇
+      </div>
+
+      <!-- Quick suggestions -->
+      <div class="ai-suggestions">
+        <button class="ai-suggestion-btn" data-q="what is the timeline">
+          🎯 What is the Mood Timeline?
+        </button>
+        <button class="ai-suggestion-btn" data-q="how are songs matched">
+          🎵 How are songs matched?
+        </button>
+        <button class="ai-suggestion-btn" data-q="what do percentages mean">
+          📊 What do % scores mean?
+        </button>
+        <button class="ai-suggestion-btn" data-q="what emotions detected">
+          😊 What emotions were detected?
+        </button>
+      </div>
+
+      <!-- AI response area -->
+      <div class="ai-response" id="aiResponse"></div>
+
+      <!-- Input -->
+      <div class="ai-input-row">
+        <input
+          class="ai-input"
+          id="aiInput"
+          type="text"
+          placeholder="Ask me anything..."
+        />
+        <button class="ai-send-btn" id="aiSendBtn">→</button>
+      </div>
+
+    </div>
+
+    <!-- FAB Button -->
+    <button class="ai-fab-btn" title="Ask MoodAI">🤖</button>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+  const SESSION_ID = "{{ session_id }}";
+</script>
+
+<footer class="copyright-footer">
+  © 2026 Harshit Seth. All Rights Reserved.
+</footer>
+
+<script src="/static/js/playlist.js"></script>
+</body>
+</html>

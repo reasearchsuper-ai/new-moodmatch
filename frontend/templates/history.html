@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoodMatch — History</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/app.css" />
+</head>
+<body>
+  <div class="bg-orbs"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
+  <nav class="nav">
+    <div class="nav-logo"><span class="logo-icon">🎵</span><span class="logo-text">MoodMatch</span></div>
+    <div class="nav-links">
+      <a href="/" class="nav-link">Upload</a>
+      <a href="/history" class="nav-link active">History</a>
+      <a href="/dashboard" class="nav-link">Analytics</a>
+    </div>
+  </nav>
+  <main class="main">
+    <section class="hero" style="margin-bottom:2rem">
+      <h1 class="hero-title" style="font-size:2.5rem">Your <span class="gradient-text">History</span></h1>
+      <p class="hero-sub">All your past mood analyses</p>
+    </section>
+    <section class="history-grid" id="historyGrid">
+      <div class="loading-state"><div class="emotion-rings"><div class="ring ring-1"></div><div class="ring ring-2"></div></div><p>Loading history...</p></div>
+    </section>
+  </main>
+  <script src="/static/js/history.js"></script>
+</body>
+</html>
