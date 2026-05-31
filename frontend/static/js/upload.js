@@ -127,7 +127,7 @@ async function startAnalysis() {
 
 function pollStatus(sessionId) {
   let attempts = 0;
-  const maxAttempts = 120; // 2 minutes timeout
+  const maxAttempts = 180;  // 180 × 5sec = 15 min max wait
 
   pollingInterval = setInterval(async () => {
     attempts++;
@@ -160,10 +160,10 @@ function pollStatus(sessionId) {
     } catch (err) {
       console.error('Polling error:', err);
     }
-  }, 1000);
+  }, 5000);  // poll every 5 seconds
 }
 
-function updateStatusUI(status, attempt) {
+function updateStatusUI(status, attempts) {
   const progress = {
     'processing': 20,
     'analyzing': 50,
@@ -176,7 +176,7 @@ function updateStatusUI(status, attempt) {
   };
 
   const msg = messages[status] || { title: 'Matching your music...', sub: 'Almost there!' };
-  const p = progress[status] || Math.min(20 + attempt * 2, 90);
+  const p = progress[status] || Math.min(20 + attempts * 0.5, 90);  // slower progress increment
 
   updateProgress(p, msg.title);
   document.getElementById('processingTitle').textContent = msg.title;
