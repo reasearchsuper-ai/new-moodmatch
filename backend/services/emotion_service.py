@@ -58,11 +58,11 @@ class EmotionDetector:
     aggregates results, and returns structured emotion data.
     """
 
-    def __init__(self, sample_rate_fps=1.0, max_frames=60):
+    def __init__(self, sample_rate_fps=0.2, max_frames=10):
         """
         Args:
-            sample_rate_fps: How many frames per second to analyze (1 = 1/sec, 0.5 = 1 every 2s)
-            max_frames: Maximum frames to analyze (prevents timeout on long videos)
+            sample_rate_fps: 0.2 = 1 frame every 5 seconds
+            max_frames: 10 frames max — fast enough for free tier
         """
         self.sample_rate_fps = sample_rate_fps
         self.max_frames = max_frames
@@ -155,7 +155,7 @@ class EmotionDetector:
                 actions=['emotion'],
                 enforce_detection=False,
                 silent=True,
-                detector_backend="opencv"   # lightweight — saves ~95MB vs retinaface
+                detector_backend="opencv"
             )
 
             # Handle list or dict result
@@ -272,11 +272,11 @@ class EmotionDetector:
         }
 
 
-# Singleton instance
+# Singleton instance — 10 frames max, 1 frame every 5 seconds
 _detector = None
 
 def get_detector():
     global _detector
     if _detector is None:
-        _detector = EmotionDetector(sample_rate_fps=1.0, max_frames=60)
+        _detector = EmotionDetector(sample_rate_fps=0.2, max_frames=10)
     return _detector
