@@ -18,7 +18,14 @@ from backend.routes.emotion import emotion_bp
 from backend.routes.songs import songs_bp
 from backend.routes.analytics import analytics_bp
 from backend.routes.history import history_bp
+from flask import Flask
 
+# The variable MUST be named exactly 'app'
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Hello, World!"
 
 def create_app():
     app = Flask(
