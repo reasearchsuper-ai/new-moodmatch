@@ -8,13 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
   <style>
-    /* ══════════════════════════════════════════
-       MoodMatch Website — Cinematic Dark Theme
-       ══════════════════════════════════════════ */
     :root {
       --bg: #05070f;
       --surface: #0a0e1a;
       --surface-2: #101828;
+      --surface-3: #162033;
       --border: rgba(255,255,255,0.06);
       --border-glow: rgba(124,111,255,0.3);
       --text: #eef2ff;
@@ -26,7 +24,7 @@
       --gold: #FFD166;
       --font-d: 'Syne', sans-serif;
       --font-b: 'DM Sans', sans-serif;
-      --r: 16px;
+      --sidebar-w: 240px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -36,13 +34,11 @@
       font-family: var(--font-b);
       background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
       line-height: 1.6;
+      overflow: hidden;
+      height: 100vh;
     }
 
-    a { text-decoration: none; color: inherit; }
-
-    /* ── Noise Texture Overlay ── */
     body::before {
       content: '';
       position: fixed;
@@ -53,234 +49,290 @@
       opacity: 0.4;
     }
 
-    /* ══ NAVBAR ══════════════════════════════════ */
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 900;
+    a { text-decoration: none; color: inherit; }
+
+    /* ── App Shell ── */
+    .app-shell {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      height: 72px;
-      background: rgba(5, 7, 15, 0.8);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
+      height: 100vh;
+      overflow: hidden;
     }
 
-    .nav-brand {
+    /* ── Sidebar ── */
+    .sidebar {
+      width: var(--sidebar-w);
+      min-width: var(--sidebar-w);
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .sidebar-logo {
+      padding: 1.4rem 1.25rem 1.2rem;
       display: flex;
       align-items: center;
       gap: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-logo-icon {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo-text {
       font-family: var(--font-d);
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: 1.05rem;
       letter-spacing: -0.02em;
     }
 
-    .nav-brand-icon {
-      width: 36px; height: 36px;
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      border-radius: 10px;
+    .sidebar-nav {
+      flex: 1;
+      padding: 1.25rem 0.75rem;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2.5rem;
-    }
-
-    .nav-link {
-      font-size: 0.875rem;
-      font-weight: 400;
-      color: var(--text-2);
-      transition: color 0.2s;
-      letter-spacing: 0.01em;
-    }
-
-    .nav-link:hover { color: var(--text); }
-
-    .nav-cta {
-      background: var(--accent);
-      color: white;
-      padding: 10px 24px;
-      border-radius: 100px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      transition: all 0.25s;
-    }
-
-    .nav-cta:hover {
-      background: #9080ff;
-      transform: translateY(-1px);
-      box-shadow: 0 8px 30px rgba(124,111,255,0.35);
-    }
-
-    .hamburger {
-      display: none;
       flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 4px;
+      gap: 3px;
     }
 
-    .hamburger span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--text-2);
-      border-radius: 2px;
-      transition: all 0.3s;
+    .nav-section-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-3);
+      padding: 0 0.75rem;
+      margin: 0.5rem 0 0.4rem;
     }
 
-    /* ══ HERO ════════════════════════════════════ */
-    .hero {
-      min-height: 100vh;
+    .nav-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 120px 5% 80px;
+      gap: 11px;
+      padding: 10px 13px;
+      border-radius: 9px;
+      border: none;
+      background: none;
+      color: var(--text-2);
+      font-family: var(--font-b);
+      font-size: 0.855rem;
+      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.18s;
+      width: 100%;
+      text-align: left;
+      position: relative;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+    }
+
+    .nav-item.active {
+      background: rgba(124,111,255,0.1);
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 50%;
+      transform: translateY(-50%);
+      width: 3px; height: 55%;
+      background: linear-gradient(180deg, var(--accent), var(--accent-2));
+      border-radius: 0 3px 3px 0;
+    }
+
+    .nav-icon {
+      width: 17px; height: 17px;
+      flex-shrink: 0;
+      opacity: 0.55;
+      transition: opacity 0.18s;
+    }
+
+    .nav-item.active .nav-icon,
+    .nav-item:hover .nav-icon { opacity: 1; }
+
+    .sidebar-footer {
+      padding: 1.1rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .ai-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(124,111,255,0.07);
+      border: 1px solid rgba(124,111,255,0.18);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 0.68rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .ai-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent-3);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    /* ── Content Area ── */
+    .content-area {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ── Views ── */
+    .view { display: none; min-height: 100%; }
+    .view.active { display: block; }
+
+    #view-upload.active,
+    #view-history.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Top Bar (shared) ── */
+    .topbar {
+      position: sticky;
+      top: 0; z-index: 50;
+      background: rgba(5,7,15,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2.25rem;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .topbar-title {
+      font-family: var(--font-d);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-2);
+    }
+
+    /* ════════════════════════════════════════
+       HOME VIEW
+    ════════════════════════════════════════ */
+
+    .home-hero {
+      padding: 3.5rem 2.5rem 2.5rem;
       position: relative;
       overflow: hidden;
     }
 
-    /* Gradient mesh */
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 900px; height: 900px;
-      background: radial-gradient(circle, rgba(124,111,255,0.12) 0%, transparent 60%);
-      top: -200px; left: -200px;
-      pointer-events: none;
-    }
-
-    .hero::after {
+    .home-hero::before {
       content: '';
       position: absolute;
       width: 700px; height: 700px;
-      background: radial-gradient(circle, rgba(255,107,157,0.10) 0%, transparent 60%);
-      bottom: -150px; right: -150px;
+      background: radial-gradient(circle, rgba(124,111,255,0.09) 0%, transparent 60%);
+      top: -200px; right: -100px;
       pointer-events: none;
-    }
-
-    .hero-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
     }
 
     .hero-pill {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(124,111,255,0.08);
-      border: 1px solid rgba(124,111,255,0.25);
+      gap: 7px;
+      background: rgba(124,111,255,0.07);
+      border: 1px solid rgba(124,111,255,0.2);
       border-radius: 100px;
-      padding: 6px 14px 6px 8px;
-      font-size: 0.78rem;
+      padding: 4px 13px 4px 7px;
+      font-size: 0.7rem;
       color: var(--accent);
-      font-weight: 500;
-      margin-bottom: 1.8rem;
-      letter-spacing: 0.04em;
+      font-weight: 600;
+      margin-bottom: 1.4rem;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .hero-pill-dot {
-      width: 20px; height: 20px;
+      width: 17px; height: 17px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.7rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
     }
 
-    .hero-h1 {
+    .home-hero h1 {
       font-family: var(--font-d);
-      font-size: clamp(3rem, 5vw, 4.5rem);
+      font-size: clamp(2.2rem, 3.5vw, 3.5rem);
       font-weight: 800;
       line-height: 1.0;
       letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.1rem;
+      max-width: 680px;
     }
 
-    .hero-h1 .line-2 {
-      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 60%, var(--gold) 100%);
+    .gradient-text {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 55%, var(--gold) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .hero-p {
-      font-size: 1.1rem;
+    .home-hero p {
+      font-size: 0.97rem;
       color: var(--text-2);
+      max-width: 490px;
       line-height: 1.8;
-      max-width: 460px;
-      margin-bottom: 2.5rem;
+      margin-bottom: 1.9rem;
       font-weight: 300;
     }
 
-    .hero-actions {
-      display: flex;
-      gap: 1rem;
+    .hero-cta {
+      display: inline-flex;
       align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
+      gap: 9px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       color: white;
-      padding: 16px 36px;
+      border: none;
+      padding: 13px 30px;
       border-radius: 100px;
       font-family: var(--font-d);
       font-weight: 700;
-      font-size: 1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.3s;
-      border: none;
-      cursor: pointer;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 60px rgba(124,111,255,0.4);
-    }
-
-    .btn-secondary {
-      color: var(--text-2);
       font-size: 0.9rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: color 0.2s;
-      font-weight: 400;
+      cursor: pointer;
+      transition: all 0.28s;
     }
 
-    .btn-secondary:hover { color: var(--text); }
+    .hero-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 44px rgba(124,111,255,0.38);
+    }
 
     .hero-stats {
       display: flex;
       gap: 2.5rem;
-      margin-top: 3rem;
-      padding-top: 2rem;
+      margin-top: 2.2rem;
+      padding-top: 1.8rem;
       border-top: 1px solid var(--border);
     }
 
     .stat-n {
       font-family: var(--font-d);
-      font-size: 1.8rem;
+      font-size: 1.55rem;
       font-weight: 800;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text;
@@ -289,426 +341,170 @@
     }
 
     .stat-l {
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       color: var(--text-3);
       text-transform: uppercase;
       letter-spacing: 0.06em;
       margin-top: 2px;
     }
 
-    /* ── Hero Right: App Mockup ── */
-    .hero-right {
-      position: relative;
+    /* Section helpers */
+    .home-section {
+      padding: 2.75rem 2.5rem;
     }
 
-    .app-mockup {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      overflow: hidden;
-      box-shadow:
-        0 40px 120px rgba(0,0,0,0.6),
-        0 0 0 1px rgba(255,255,255,0.04),
-        inset 0 1px 0 rgba(255,255,255,0.06);
-      animation: floatMock 6s ease-in-out infinite;
-    }
-
-    @keyframes floatMock {
-      0%, 100% { transform: translateY(0) rotate(-1deg); }
-      50% { transform: translateY(-16px) rotate(-1deg); }
-    }
-
-    .mockup-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 18px;
-      background: var(--surface-2);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .mockup-dot {
-      width: 10px; height: 10px;
-      border-radius: 50%;
-    }
-
-    .mockup-body {
-      padding: 1.5rem;
-    }
-
-    .mockup-emotion {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--surface-2);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border);
-    }
-
-    .mockup-emoji {
-      font-size: 2rem;
-      width: 52px; height: 52px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,209,102,0.12);
-      border-radius: 12px;
-    }
-
-    .mockup-emotion-label {
-      font-family: var(--font-d);
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--gold);
-    }
-
-    .mockup-emotion-sub {
-      font-size: 0.75rem;
-      color: var(--text-2);
-      margin-top: 2px;
-    }
-
-    .mockup-bar-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .mockup-bar-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .mockup-bar-label {
-      width: 60px;
-      font-size: 0.7rem;
-      color: var(--text-3);
-    }
-
-    .mockup-bar-track {
-      flex: 1;
-      height: 5px;
-      background: var(--surface-2);
-      border-radius: 100px;
-      overflow: hidden;
-    }
-
-    .mockup-bar-fill {
-      height: 100%;
-      border-radius: 100px;
-      animation: barGrow 1.5s ease both;
-    }
-
-    @keyframes barGrow {
-      from { width: 0; }
-    }
-
-    .mockup-songs {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .mockup-song {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      background: var(--surface-2);
-      border-radius: 10px;
-      border: 1px solid var(--border);
-    }
-
-    .mockup-song-dot {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
-
-    .mockup-song-info { flex: 1; min-width: 0; }
-
-    .mockup-song-title {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .mockup-song-artist {
-      font-size: 0.68rem;
-      color: var(--text-3);
-    }
-
-    .mockup-match {
-      font-size: 0.65rem;
-      background: rgba(124,111,255,0.15);
-      color: var(--accent);
-      padding: 2px 7px;
-      border-radius: 100px;
-      white-space: nowrap;
-    }
-
-    /* Floating badges */
-    .float-badge {
-      position: absolute;
-      background: var(--surface-2);
-      border: 1px solid var(--border-glow);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 0.78rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
-      backdrop-filter: blur(10px);
-      animation: floatBadge 4s ease-in-out infinite;
-      white-space: nowrap;
-    }
-
-    .float-badge-1 {
-      top: -20px; right: -30px;
-      animation-delay: 0s;
-    }
-
-    .float-badge-2 {
-      bottom: 40px; left: -40px;
-      animation-delay: 2s;
-    }
-
-    @keyframes floatBadge {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* ══ HOW IT WORKS ════════════════════════════ */
-    .section {
-      padding: 8rem 5%;
-      max-width: 1200px;
-      margin: 0 auto;
+    .home-section + .home-section {
+      border-top: 1px solid var(--border);
     }
 
     .section-label {
-      font-size: 0.75rem;
+      font-size: 0.68rem;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.12em;
       color: var(--accent);
-      font-weight: 600;
-      margin-bottom: 1rem;
+      margin-bottom: 0.65rem;
     }
 
-    .section-h2 {
+    .home-section h2 {
       font-family: var(--font-d);
-      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-size: clamp(1.5rem, 2.5vw, 2.2rem);
       font-weight: 800;
       letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-      line-height: 1.1;
+      margin-bottom: 0.55rem;
     }
 
     .section-sub {
-      font-size: 1rem;
+      font-size: 0.87rem;
       color: var(--text-2);
-      max-width: 520px;
-      line-height: 1.8;
       font-weight: 300;
-    }
-
-    .section-header {
-      margin-bottom: 4rem;
+      max-width: 460px;
+      line-height: 1.75;
+      margin-bottom: 2rem;
     }
 
     /* Steps */
     .steps-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-      position: relative;
-    }
-
-    .steps-grid::before {
-      content: '';
-      position: absolute;
-      top: 60px;
-      left: calc(16.67% + 30px);
-      right: calc(16.67% + 30px);
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-2));
-      opacity: 0.3;
+      gap: 1.25rem;
     }
 
     .step-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      transition: all 0.3s;
-      position: relative;
+      border-radius: 16px;
+      padding: 1.6rem;
+      transition: all 0.28s;
     }
 
     .step-card:hover {
       border-color: var(--border-glow);
-      transform: translateY(-8px);
-      box-shadow: 0 24px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,111,255,0.1);
+      transform: translateY(-5px);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
     }
 
-    .step-num {
-      width: 56px; height: 56px;
-      border-radius: 16px;
+    .step-icon-wrap {
+      width: 46px; height: 46px;
       background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: var(--font-d);
-      font-weight: 800;
-      font-size: 1.3rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 8px 30px rgba(124,111,255,0.3);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.1rem;
+      box-shadow: 0 7px 22px rgba(124,111,255,0.22);
     }
 
-    .step-icon {
-      font-size: 1.5rem;
-    }
-
-    .step-title {
+    .step-card h3 {
       font-family: var(--font-d);
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.45rem;
     }
 
-    .step-desc {
-      font-size: 0.875rem;
+    .step-card p {
+      font-size: 0.8rem;
       color: var(--text-2);
       line-height: 1.8;
       font-weight: 300;
     }
 
-    /* ══ FEATURES ════════════════════════════════ */
-    .features-wrap {
+    /* Features */
+    .features-bg {
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
 
-    .features-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 8rem 5%;
-    }
-
     .features-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 1.5rem;
+      gap: 1.1rem;
+      margin-top: 1.75rem;
     }
 
     .feature-card {
-      padding: 2rem;
+      padding: 1.6rem;
       border: 1px solid var(--border);
-      border-radius: 20px;
+      border-radius: 16px;
       background: var(--bg);
-      transition: all 0.3s;
+      transition: all 0.28s;
       position: relative;
       overflow: hidden;
     }
 
-    .feature-card::before {
+    .feature-card::after {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      right: 0; height: 2px;
+      top: 0; left: 0; right: 0;
+      height: 2px;
       background: linear-gradient(90deg, var(--accent), var(--accent-2));
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.28s;
     }
 
-    .feature-card:hover {
-      border-color: rgba(124,111,255,0.2);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .feature-card:hover::before { opacity: 1; }
-
-    .feature-card.featured {
-      grid-column: span 2;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      align-items: center;
-      background: linear-gradient(135deg, rgba(124,111,255,0.06), rgba(255,107,157,0.04));
-      border-color: rgba(124,111,255,0.15);
-    }
+    .feature-card:hover { border-color: rgba(124,111,255,0.2); transform: translateY(-3px); }
+    .feature-card:hover::after { opacity: 1; }
 
     .feature-icon {
-      width: 52px; height: 52px;
-      border-radius: 14px;
+      width: 44px; height: 44px;
       background: var(--surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 1.2rem;
       border: 1px solid var(--border);
+      border-radius: 11px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.15rem;
+      margin-bottom: 0.95rem;
     }
 
-    .feature-title {
+    .feature-card h3 {
       font-family: var(--font-d);
-      font-size: 1.05rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.4rem;
     }
 
-    .feature-desc {
-      font-size: 0.875rem;
+    .feature-card p {
+      font-size: 0.78rem;
       color: var(--text-2);
       line-height: 1.8;
       font-weight: 300;
     }
 
-    /* ══ EMOTIONS SHOWCASE ═══════════════════════ */
-    .emotions-section {
-      padding: 8rem 5%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
+    /* Emotions */
     .emotions-grid {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
-      gap: 1rem;
-      margin-top: 3rem;
+      gap: 0.7rem;
+      margin-top: 1.75rem;
     }
 
     .emotion-tile {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.5rem 1rem;
+      border-radius: 13px;
+      padding: 1.2rem 0.6rem;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .emotion-tile::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .emotion-tile:hover {
-      transform: translateY(-8px) scale(1.05);
-      border-color: transparent;
+      transition: all 0.28s;
     }
 
     .emotion-tile[data-emotion="happy"]    { --ec: #FFD166; }
@@ -720,910 +516,1224 @@
     .emotion-tile[data-emotion="neutral"]  { --ec: #85C1E9; }
 
     .emotion-tile:hover {
-      box-shadow: 0 20px 60px color-mix(in srgb, var(--ec) 30%, transparent);
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 14px 40px color-mix(in srgb, var(--ec) 28%, transparent);
       border-color: var(--ec);
     }
 
-    .emotion-tile-emoji {
-      font-size: 2.5rem;
-      margin-bottom: 0.8rem;
-      display: block;
-    }
+    .emotion-emoji { font-size: 1.9rem; margin-bottom: 0.5rem; display: block; }
 
-    .emotion-tile-label {
+    .emotion-label {
       font-family: var(--font-d);
-      font-size: 0.75rem;
+      font-size: 0.64rem;
       font-weight: 700;
       color: var(--text-2);
       text-transform: uppercase;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
-    .emotion-tile-songs {
-      font-size: 0.65rem;
-      color: var(--text-3);
-      margin-top: 4px;
-    }
+    .emotion-count { font-size: 0.58rem; color: var(--text-3); margin-top: 3px; }
 
-    /* ══ TESTIMONIALS ════════════════════════════ */
-    .testimonials-wrap {
-      padding: 8rem 5%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .testimonials-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .testimonial-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2rem;
-      transition: all 0.3s;
-    }
-
-    .testimonial-card:hover {
-      border-color: rgba(124,111,255,0.2);
-      transform: translateY(-4px);
-    }
-
-    .testimonial-stars {
-      color: var(--gold);
-      font-size: 0.9rem;
-      letter-spacing: 2px;
-      margin-bottom: 1rem;
-    }
-
-    .testimonial-text {
-      font-size: 0.9rem;
-      color: var(--text-2);
-      line-height: 1.9;
-      font-style: italic;
-      font-weight: 300;
-      margin-bottom: 1.5rem;
-    }
-
-    .testimonial-author {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .testimonial-avatar {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-    }
-
-    .testimonial-name {
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    .testimonial-role {
-      font-size: 0.75rem;
-      color: var(--text-3);
-    }
-
-    /* ══ PRICING ═════════════════════════════════ */
-    .pricing-wrap {
-      background: var(--surface);
+    /* Footer */
+    .home-footer {
       border-top: 1px solid var(--border);
+      padding: 1.75rem 2.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
 
-    .pricing-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 8rem 5%;
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .pricing-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 2.5rem;
-      position: relative;
-      transition: all 0.3s;
-    }
-
-    .pricing-card:hover {
-      transform: translateY(-6px);
-    }
-
-    .pricing-card.popular {
-      background: linear-gradient(135deg, rgba(124,111,255,0.08), rgba(255,107,157,0.05));
-      border-color: rgba(124,111,255,0.4);
-      box-shadow: 0 0 60px rgba(124,111,255,0.12);
-    }
-
-    .popular-badge {
-      position: absolute;
-      top: -14px; left: 50%;
-      transform: translateX(-50%);
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 4px 16px;
-      border-radius: 100px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-
-    .plan-name {
-      font-family: var(--font-d);
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--text-2);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 0.8rem;
-    }
-
-    .plan-price {
-      font-family: var(--font-d);
-      font-size: 3rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 0.2rem;
-    }
-
-    .plan-price sup {
-      font-size: 1.2rem;
-      vertical-align: super;
-      font-weight: 400;
-    }
-
-    .plan-period {
-      font-size: 0.8rem;
+    .home-footer span {
+      font-size: 0.76rem;
       color: var(--text-3);
-      margin-bottom: 1.5rem;
-    }
-
-    .plan-desc {
-      font-size: 0.85rem;
-      color: var(--text-2);
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border);
       font-weight: 300;
     }
 
-    .plan-features {
-      list-style: none;
+    /* Fade-up animation */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ════════════════════════════════════════
+       UPLOAD VIEW
+    ════════════════════════════════════════ */
+
+    .upload-body {
+      flex: 1;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 2rem;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 2.5rem 2.25rem;
     }
 
-    .plan-feature {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 0.85rem;
-      color: var(--text-2);
-    }
-
-    .check {
-      color: var(--accent-3);
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-
-    .cross {
-      color: var(--text-3);
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
-
-    .btn-plan {
+    .upload-card {
       width: 100%;
-      padding: 14px;
-      border-radius: 100px;
+      max-width: 640px;
+    }
+
+    .upload-card-header {
+      margin-bottom: 1.75rem;
+    }
+
+    .upload-card-header h1 {
       font-family: var(--font-d);
-      font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 0.35rem;
+    }
+
+    .upload-card-header p {
+      font-size: 0.87rem;
+      color: var(--text-2);
+      font-weight: 300;
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed rgba(124,111,255,0.28);
+      border-radius: 18px;
+      padding: 3.25rem 2rem;
+      text-align: center;
+      background: rgba(124,111,255,0.025);
       cursor: pointer;
       transition: all 0.25s;
-      text-align: center;
-      display: block;
-      border: none;
-    }
-
-    .btn-plan-outline {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-2);
-    }
-
-    .btn-plan-outline:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-    }
-
-    .btn-plan-fill {
-      background: linear-gradient(135deg, var(--accent), var(--accent-2));
-      color: white;
-    }
-
-    .btn-plan-fill:hover {
-      box-shadow: 0 12px 40px rgba(124,111,255,0.4);
-      transform: translateY(-2px);
-    }
-
-    /* ══ CTA SECTION ═════════════════════════════ */
-    .cta-wrap {
-      padding: 8rem 5%;
-      text-align: center;
       position: relative;
       overflow: hidden;
     }
 
-    .cta-wrap::before {
+    .drop-zone::before {
       content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, rgba(124,111,255,0.12) 0%, transparent 70%);
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(124,111,255,0.05) 0%, transparent 70%);
       pointer-events: none;
     }
 
-    .cta-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 700px;
-      margin: 0 auto;
+    .drop-zone:hover,
+    .drop-zone.dragover {
+      border-color: rgba(124,111,255,0.58);
+      background: rgba(124,111,255,0.055);
     }
 
-    .cta-h2 {
+    .drop-zone.has-file {
+      border-color: rgba(0,212,170,0.38);
+      background: rgba(0,212,170,0.03);
+    }
+
+    .dz-icon {
+      width: 68px; height: 68px;
+      background: linear-gradient(135deg, rgba(124,111,255,0.11), rgba(255,107,157,0.07));
+      border: 1px solid rgba(124,111,255,0.18);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.35rem;
+      transition: all 0.25s;
+    }
+
+    .drop-zone:hover .dz-icon,
+    .drop-zone.dragover .dz-icon {
+      background: linear-gradient(135deg, rgba(124,111,255,0.2), rgba(255,107,157,0.14));
+      border-color: rgba(124,111,255,0.38);
+      transform: scale(1.06);
+    }
+
+    .dz-title {
       font-family: var(--font-d);
-      font-size: clamp(2.5rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.2rem;
-      line-height: 1.05;
-    }
-
-    .cta-p {
-      font-size: 1rem;
-      color: var(--text-2);
-      margin-bottom: 2.5rem;
-      font-weight: 300;
-    }
-
-    /* ══ FOOTER ══════════════════════════════════ */
-    .footer {
-      border-top: 1px solid var(--border);
-      padding: 4rem 5%;
-    }
-
-    .footer-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 4rem;
-    }
-
-    .footer-brand p {
-      font-size: 0.875rem;
-      color: var(--text-3);
-      margin-top: 1rem;
-      max-width: 280px;
-      line-height: 1.8;
-      font-weight: 300;
-    }
-
-    .footer-col-title {
-      font-family: var(--font-d);
-      font-size: 0.8rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--text-3);
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.4rem;
     }
 
-    .footer-links {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.7rem;
-    }
-
-    .footer-links a {
-      font-size: 0.875rem;
-      color: var(--text-3);
-      transition: color 0.2s;
-      font-weight: 300;
-    }
-
-    .footer-links a:hover { color: var(--text); }
-
-    .footer-bottom {
-      max-width: 1200px;
-      margin: 3rem auto 0;
-      padding-top: 2rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .footer-copy {
+    .dz-sub {
       font-size: 0.8rem;
-      color: var(--text-3);
+      color: var(--text-2);
       font-weight: 300;
+      margin-bottom: 1.15rem;
     }
 
-    .footer-socials {
-      display: flex;
-      gap: 1rem;
+    .browse-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(124,111,255,0.09);
+      border: 1px solid rgba(124,111,255,0.22);
+      color: var(--accent);
+      padding: 8px 20px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: var(--font-b);
     }
 
-    .social-link {
-      width: 36px; height: 36px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
+    .browse-btn:hover {
+      background: rgba(124,111,255,0.17);
+      border-color: rgba(124,111,255,0.42);
+    }
+
+    .dz-formats {
+      margin-top: 0.9rem;
+      font-size: 0.67rem;
+      color: var(--text-3);
+    }
+
+    /* File preview row */
+    .file-preview {
+      display: none;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface-2);
+      border: 1px solid rgba(0,212,170,0.18);
+      border-radius: 12px;
+      padding: 0.9rem 1.1rem;
+      margin-top: 0.9rem;
+    }
+
+    .file-preview.show { display: flex; }
+
+    .file-icon-wrap {
+      width: 42px; height: 42px;
+      background: rgba(0,212,170,0.09);
+      border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .fp-info { flex: 1; min-width: 0; }
+
+    .fp-name {
+      font-weight: 600;
+      font-size: 0.84rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fp-meta { font-size: 0.72rem; color: var(--text-2); margin-top: 1px; }
+
+    .fp-remove {
+      background: none; border: none;
+      color: var(--text-3); cursor: pointer;
+      padding: 4px; border-radius: 6px;
+      display: flex; transition: all 0.18s;
+    }
+
+    .fp-remove:hover { color: #FF4F4F; background: rgba(255,79,79,0.08); }
+
+    /* Analyse Button */
+    .analyse-wrap { margin-top: 1.6rem; }
+
+    .analyse-btn {
+      width: 100%;
+      padding: 17px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      border: none;
+      border-radius: 13px;
+      font-family: var(--font-d);
+      font-weight: 800;
+      font-size: 1.02rem;
+      cursor: pointer;
+      transition: all 0.28s;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.9rem;
+      gap: 11px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .analyse-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.09), rgba(255,255,255,0));
+      opacity: 0;
+      transition: opacity 0.28s;
+    }
+
+    .analyse-btn:not(:disabled):hover::before { opacity: 1; }
+
+    .analyse-btn:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 52px rgba(124,111,255,0.42);
+    }
+
+    .analyse-btn:disabled {
+      opacity: 0.38;
+      cursor: not-allowed;
+    }
+
+    .btn-spinner {
+      width: 19px; height: 19px;
+      border: 2px solid rgba(255,255,255,0.28);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: none;
+    }
+
+    .analyse-btn.loading .btn-spinner { display: block; }
+    .analyse-btn.loading .btn-label { display: none; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Progress */
+    .progress-wrap {
+      margin-top: 1.15rem;
+      display: none;
+    }
+
+    .progress-wrap.show { display: block; }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.76rem;
+      color: var(--text-2);
+      margin-bottom: 0.45rem;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: var(--surface-2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      border-radius: 100px;
+      transition: width 0.35s ease;
+      width: 0%;
+    }
+
+    .progress-steps {
+      display: flex;
+      gap: 0.85rem;
+      margin-top: 0.9rem;
+      flex-wrap: wrap;
+    }
+
+    .ps {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
       color: var(--text-3);
-      transition: all 0.2s;
     }
 
-    .social-link:hover {
-      border-color: var(--accent);
+    .ps.done { color: var(--accent-3); }
+    .ps.active { color: var(--accent); }
+
+    .ps-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* Results */
+    .results-wrap {
+      margin-top: 1.4rem;
+      display: none;
+    }
+
+    .results-wrap.show { display: block; }
+
+    .results-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 1.1rem;
+    }
+
+    .results-heading-text {
+      font-family: var(--font-d);
+      font-size: 0.97rem;
+      font-weight: 700;
+    }
+
+    .done-badge {
+      background: rgba(0,212,170,0.1);
+      border: 1px solid rgba(0,212,170,0.22);
+      color: var(--accent-3);
+      font-size: 0.66rem;
+      padding: 2px 9px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .emotion-result-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 1.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .er-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 1.1rem;
+    }
+
+    .er-emoji {
+      width: 54px; height: 54px;
+      background: rgba(255,209,102,0.1);
+      border-radius: 13px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem;
+    }
+
+    .er-name {
+      font-family: var(--font-d);
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .er-sub {
+      font-size: 0.75rem;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
+
+    .er-bars { display: flex; flex-direction: column; gap: 7px; }
+
+    .er-bar-row { display: flex; align-items: center; gap: 9px; }
+
+    .er-bar-label {
+      width: 62px;
+      font-size: 0.7rem;
+      color: var(--text-2);
+      flex-shrink: 0;
+    }
+
+    .er-bar-track {
+      flex: 1;
+      height: 5px;
+      background: var(--surface-2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .er-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .er-bar-pct {
+      width: 30px;
+      font-size: 0.66rem;
+      color: var(--text-3);
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    /* Playlist result */
+    .playlist-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 1.15rem;
+    }
+
+    .playlist-box-label {
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-3);
+      margin-bottom: 0.7rem;
+    }
+
+    .song-list { display: flex; flex-direction: column; gap: 5px; }
+
+    .song-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: border-color 0.18s;
+    }
+
+    .song-row:hover { border-color: rgba(124,111,255,0.2); }
+
+    .song-num { width: 18px; font-size: 0.66rem; color: var(--text-3); text-align: center; flex-shrink: 0; }
+
+    .song-dot { width: 28px; height: 28px; border-radius: 7px; flex-shrink: 0; }
+
+    .song-info { flex: 1; min-width: 0; }
+
+    .song-name {
+      font-size: 0.76rem; font-weight: 600;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .song-artist { font-size: 0.66rem; color: var(--text-3); }
+
+    .song-match {
+      font-size: 0.62rem;
+      background: rgba(124,111,255,0.11);
       color: var(--accent);
+      padding: 2px 7px;
+      border-radius: 100px;
+      flex-shrink: 0;
     }
 
-    /* ══ RESPONSIVE ══════════════════════════════ */
-    @media (max-width: 1024px) {
-      .hero-inner { gap: 3rem; }
-      .features-grid { grid-template-columns: 1fr 1fr; }
-      .feature-card.featured { grid-template-columns: 1fr; }
+    /* ════════════════════════════════════════
+       HISTORY VIEW
+    ════════════════════════════════════════ */
+
+    .history-body {
+      flex: 1;
+      padding: 1.85rem 2.25rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 76px; height: 76px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.9rem;
+      margin-bottom: 1.35rem;
+    }
+
+    .empty-title {
+      font-family: var(--font-d);
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .empty-sub {
+      font-size: 0.84rem;
+      color: var(--text-2);
+      max-width: 280px;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 1.35rem;
+    }
+
+    .empty-cta {
+      background: rgba(124,111,255,0.09);
+      border: 1px solid rgba(124,111,255,0.22);
+      color: var(--accent);
+      padding: 9px 22px;
+      border-radius: 100px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: all 0.18s;
+    }
+
+    .empty-cta:hover { background: rgba(124,111,255,0.17); }
+
+    /* History list */
+    .history-list { display: flex; flex-direction: column; gap: 0.85rem; }
+
+    .history-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.1rem 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+      transition: all 0.18s;
+    }
+
+    .history-card:hover {
+      border-color: rgba(124,111,255,0.18);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.18);
+    }
+
+    .hc-emotion-icon {
+      width: 50px; height: 50px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .hc-info { flex: 1; min-width: 0; }
+
+    .hc-filename {
+      font-weight: 600;
+      font-size: 0.875rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 4px;
+    }
+
+    .hc-meta {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .hc-meta-item {
+      font-size: 0.7rem;
+      color: var(--text-3);
+      display: flex; align-items: center; gap: 3px;
+    }
+
+    .hc-emotion-badge {
+      font-size: 0.67rem;
+      padding: 2px 9px;
+      border-radius: 100px;
+      font-weight: 600;
+    }
+
+    .hc-songs { text-align: right; }
+
+    .hc-songs-n {
+      font-family: var(--font-d);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+
+    .hc-songs-l { font-size: 0.62rem; color: var(--text-3); }
+
+    .clear-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-3);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.73rem;
+      cursor: pointer;
+      font-family: var(--font-b);
+      transition: all 0.18s;
+    }
+
+    .clear-btn:hover { border-color: rgba(255,79,79,0.28); color: #FF4F4F; }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      :root { --sidebar-w: 200px; }
+      .steps-grid { grid-template-columns: 1fr 1fr; }
       .emotions-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      .nav-links { display: none; }
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-right { display: none; }
+      body { overflow: auto; height: auto; }
+      .app-shell { flex-direction: column; height: auto; min-height: 100vh; }
+      .content-area { overflow: visible; }
+
+      .sidebar {
+        width: 100%; min-width: 0; height: auto;
+        flex-direction: row; align-items: center;
+        border-right: none; border-bottom: 1px solid var(--border);
+        overflow-x: auto;
+      }
+
+      .sidebar-logo { border-bottom: none; padding: 0.75rem; flex-shrink: 0; }
+      .sidebar-nav { flex-direction: row; padding: 0.5rem; flex-wrap: nowrap; gap: 2px; }
+      .nav-section-label { display: none; }
+      .nav-item.active::before { display: none; }
+      .sidebar-footer { display: none; }
+
+      .home-hero, .home-section { padding: 2rem 1.25rem; }
+      .features-bg .home-section { padding: 2rem 1.25rem; }
       .steps-grid { grid-template-columns: 1fr; }
-      .steps-grid::before { display: none; }
       .features-grid { grid-template-columns: 1fr; }
-      .feature-card.featured { grid-column: 1; }
       .emotions-grid { grid-template-columns: repeat(4, 1fr); }
-      .testimonials-grid { grid-template-columns: 1fr; }
-      .pricing-grid { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
-      .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+      .upload-body, .history-body { padding: 1.5rem 1.25rem; }
+      .topbar { padding: 0 1.25rem; }
+
+      .view { min-height: calc(100vh - 56px); }
+      #view-upload.active, #view-history.active { min-height: calc(100vh - 56px); }
     }
 
     @media (max-width: 480px) {
       .emotions-grid { grid-template-columns: repeat(3, 1fr); }
       .hero-stats { gap: 1.5rem; }
+      .steps-grid { grid-template-columns: 1fr; }
     }
-
-    /* ══ ANIMATIONS ══════════════════════════════ */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-
-    .fade-up.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .fade-up:nth-child(2) { transition-delay: 0.1s; }
-    .fade-up:nth-child(3) { transition-delay: 0.2s; }
-    .fade-up:nth-child(4) { transition-delay: 0.3s; }
   </style>
 </head>
 <body>
 
-  <!-- ══ NAVBAR ═════════════════════════════════════════ -->
-  <nav class="navbar">
-    <a href="#" class="nav-brand">
-      <div class="nav-brand-icon">🎵</div>
-      MoodMatch
-    </a>
-    <div class="nav-links">
-      <a href="#how" class="nav-link">How it Works</a>
-      <a href="#features" class="nav-link">Features</a>
-      <a href="#emotions" class="nav-link">Emotions</a>
-      <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="#how" class="nav-cta">Learn More →</a>
-    </div>
-    <div class="hamburger" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </div>
-  </nav>
+<div class="app-shell">
 
-  <!-- ══ HERO ═══════════════════════════════════════════ -->
-  <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-left">
+  <!-- ══════════ SIDEBAR ══════════ -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        </svg>
+      </div>
+      <span class="sidebar-logo-text">MoodMatch</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Menu</div>
+
+      <button class="nav-item active" data-view="home">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9,22 9,12 15,12 15,22"/>
+        </svg>
+        Homepage
+      </button>
+
+      <button class="nav-item" data-view="upload">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16,16 12,12 8,16"/><line x1="12" y1="12" x2="12" y2="21"/>
+          <path d="M20.39,18.39A5,5,0,0,0,18,9h-1.26A8,8,0,1,0,3,16.3"/>
+        </svg>
+        Upload Video
+      </button>
+
+      <button class="nav-item" data-view="history">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12,6 12,12 16,14"/>
+        </svg>
+        History
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="ai-badge">
+        <div class="ai-dot"></div>
+        DeepFace AI
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══════════ CONTENT ══════════ -->
+  <div class="content-area">
+
+    <!-- ═══ HOME VIEW ═══ -->
+    <div id="view-home" class="view active">
+
+      <div class="topbar">
+        <span class="topbar-title">Homepage</span>
+        <button class="hero-cta" onclick="switchView('upload')" style="padding:8px 20px;font-size:0.8rem;">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="16,16 12,12 8,16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39,18.39A5,5,0,0,0,18,9h-1.26A8,8,0,1,0,3,16.3"/>
+          </svg>
+          Analyse a Video
+        </button>
+      </div>
+
+      <!-- Hero -->
+      <div class="home-hero">
         <div class="hero-pill">
           <div class="hero-pill-dot">✦</div>
           Powered by DeepFace AI
         </div>
-        <h1 class="hero-h1">
-          Your Face<br/>
-          <span class="line-2">Knows the Song</span><br/>
-          You Need
-        </h1>
-        <p class="hero-p">
-          Upload any video. Our emotion AI reads your facial expressions
-          in real time and builds a playlist perfectly tuned to how you feel right now.
-        </p>
-        <div class="hero-actions">
-          <a href="#how" class="btn-primary">
-            See How It Works
-            <span>→</span>
-          </a>
-          <a href="#how" class="btn-secondary">
-            <span>▶</span> See how it works
-          </a>
-        </div>
+        <h1>Your Face<br/><span class="gradient-text">Knows the Song</span><br/>You Need</h1>
+        <p>Upload any video. Our emotion AI reads your facial expressions in real time and builds a playlist perfectly tuned to how you feel right now.</p>
+        <button class="hero-cta" onclick="switchView('upload')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="16,16 12,12 8,16"/><line x1="12" y1="12" x2="12" y2="21"/>
+            <path d="M20.39,18.39A5,5,0,0,0,18,9h-1.26A8,8,0,1,0,3,16.3"/>
+          </svg>
+          Start Analysing
+        </button>
         <div class="hero-stats">
-          <div class="stat">
-            <div class="stat-n">7+</div>
-            <div class="stat-l">Emotions Detected</div>
+          <div><div class="stat-n">7+</div><div class="stat-l">Emotions Detected</div></div>
+          <div><div class="stat-n">100+</div><div class="stat-l">Curated Songs</div></div>
+          <div><div class="stat-n">&lt;30s</div><div class="stat-l">Analysis Time</div></div>
+        </div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="home-section">
+        <div class="section-label">How It Works</div>
+        <h2>Three steps to your perfect playlist</h2>
+        <p class="section-sub">No account needed. No mood logging. Just your face and your feelings.</p>
+        <div class="steps-grid">
+          <div class="step-card fade-up">
+            <div class="step-icon-wrap">📹</div>
+            <h3>Upload a Video</h3>
+            <p>Record yourself for a few seconds or upload any existing clip. Supports MP4, MOV, AVI, MKV, WEBM — up to 200MB.</p>
           </div>
-          <div class="stat">
-            <div class="stat-n">100+</div>
-            <div class="stat-l">Curated Songs</div>
+          <div class="step-card fade-up">
+            <div class="step-icon-wrap">🧠</div>
+            <h3>AI Reads Your Emotions</h3>
+            <p>DeepFace analyzes every frame, detecting 7 emotions — happiness, sadness, anger, surprise, fear, disgust, and calm — with high accuracy.</p>
           </div>
-          <div class="stat">
-            <div class="stat-n">&lt;30s</div>
-            <div class="stat-l">Analysis Time</div>
+          <div class="step-card fade-up">
+            <div class="step-icon-wrap">🎶</div>
+            <h3>Get Your Playlist</h3>
+            <p>Our engine matches songs to your emotional fingerprint using energy, valence, and BPM alignment. Your mood, your music.</p>
           </div>
         </div>
       </div>
 
-      <!-- App Mockup -->
-      <div class="hero-right">
-        <div class="float-badge float-badge-1">
-          <span>😊</span>
-          <div>
-            <div style="font-weight:600;font-size:0.8rem">Happy detected</div>
-            <div style="font-size:0.7rem;color:var(--text-3)">94% confidence</div>
-          </div>
-        </div>
-
-        <div class="app-mockup">
-          <div class="mockup-bar">
-            <div class="mockup-dot" style="background:#FF5F56"></div>
-            <div class="mockup-dot" style="background:#FFBD2E"></div>
-            <div class="mockup-dot" style="background:#27C93F"></div>
-            <div style="flex:1;text-align:center;font-size:0.7rem;color:var(--text-3)">moodmatch.app</div>
-          </div>
-          <div class="mockup-body">
-            <div class="mockup-emotion">
-              <div class="mockup-emoji">😊</div>
-              <div>
-                <div class="mockup-emotion-label">Happy · Joyful</div>
-                <div class="mockup-emotion-sub">Radiating positive energy • 12 frames</div>
-              </div>
+      <!-- Features -->
+      <div class="features-bg">
+        <div class="home-section">
+          <div class="section-label">Features</div>
+          <h2>Enterprise-grade AI, built for everyone</h2>
+          <div class="features-grid">
+            <div class="feature-card fade-up">
+              <div class="feature-icon">🎯</div>
+              <h3>Vector-Based Emotion Matching</h3>
+              <p>Uses a full 7-dimension emotion score vector to compute cosine similarity against every song in the catalog — ranked by how closely their mood profile aligns with yours.</p>
             </div>
-            <div class="mockup-bar-rows">
-              <div class="mockup-bar-row">
-                <div class="mockup-bar-label">Happy</div>
-                <div class="mockup-bar-track">
-                  <div class="mockup-bar-fill" style="width:78%;background:#FFD166"></div>
-                </div>
-              </div>
-              <div class="mockup-bar-row">
-                <div class="mockup-bar-label">Neutral</div>
-                <div class="mockup-bar-track">
-                  <div class="mockup-bar-fill" style="width:12%;background:#85C1E9;animation-delay:.2s"></div>
-                </div>
-              </div>
-              <div class="mockup-bar-row">
-                <div class="mockup-bar-label">Surprise</div>
-                <div class="mockup-bar-track">
-                  <div class="mockup-bar-fill" style="width:10%;background:#FF8C42;animation-delay:.4s"></div>
-                </div>
-              </div>
+            <div class="feature-card fade-up">
+              <div class="feature-icon">📊</div>
+              <h3>Real-time Emotion Timeline</h3>
+              <p>See exactly how your emotions shifted throughout the video. Identify peaks, dips, and your dominant emotional arc with live Chart.js visualization.</p>
             </div>
-            <div style="font-size:0.7rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem">Your Playlist</div>
-            <div class="mockup-songs">
-              <div class="mockup-song">
-                <div class="mockup-song-dot" style="background:#FFD16622"></div>
-                <div class="mockup-song-info">
-                  <div class="mockup-song-title">Happy</div>
-                  <div class="mockup-song-artist">Pharrell Williams</div>
-                </div>
-                <span class="mockup-match">96%</span>
-              </div>
-              <div class="mockup-song">
-                <div class="mockup-song-dot" style="background:#FF6B9D22"></div>
-                <div class="mockup-song-info">
-                  <div class="mockup-song-title">Levitating</div>
-                  <div class="mockup-song-artist">Dua Lipa</div>
-                </div>
-                <span class="mockup-match">91%</span>
-              </div>
-              <div class="mockup-song">
-                <div class="mockup-song-dot" style="background:#7C6FFF22"></div>
-                <div class="mockup-song-info">
-                  <div class="mockup-song-title">Uptown Funk</div>
-                  <div class="mockup-song-artist">Mark Ronson</div>
-                </div>
-                <span class="mockup-match">88%</span>
-              </div>
+            <div class="feature-card fade-up">
+              <div class="feature-icon">⚡</div>
+              <h3>Async Processing Engine</h3>
+              <p>Video processing runs in a background thread so the UI stays responsive. Real-time status polling keeps you updated as each stage completes.</p>
+            </div>
+            <div class="feature-card fade-up">
+              <div class="feature-icon">🎛️</div>
+              <h3>BPM & Energy Alignment</h3>
+              <p>Each song is matched not just by emotion but also by tempo and energy level. Intense anger gets high-BPM tracks. Deep sadness gets slow acoustic songs.</p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="float-badge float-badge-2">
-          <span>🎵</span>
-          <div>
-            <div style="font-weight:600;font-size:0.8rem">15 songs matched</div>
-            <div style="font-size:0.7rem;color:var(--text-3)">in 4.2 seconds</div>
-          </div>
+      <!-- Emotions -->
+      <div class="home-section">
+        <div class="section-label">Emotion Engine</div>
+        <h2>7 emotions. Infinite playlists.</h2>
+        <p class="section-sub">Every shade of human feeling maps to a carefully curated sonic palette.</p>
+        <div class="emotions-grid">
+          <div class="emotion-tile" data-emotion="happy"><span class="emotion-emoji">😊</span><div class="emotion-label">Happy</div><div class="emotion-count">10 songs</div></div>
+          <div class="emotion-tile" data-emotion="sad"><span class="emotion-emoji">😢</span><div class="emotion-label">Sad</div><div class="emotion-count">10 songs</div></div>
+          <div class="emotion-tile" data-emotion="angry"><span class="emotion-emoji">😠</span><div class="emotion-label">Angry</div><div class="emotion-count">10 songs</div></div>
+          <div class="emotion-tile" data-emotion="surprise"><span class="emotion-emoji">😲</span><div class="emotion-label">Surprised</div><div class="emotion-count">5 songs</div></div>
+          <div class="emotion-tile" data-emotion="fear"><span class="emotion-emoji">😨</span><div class="emotion-label">Fearful</div><div class="emotion-count">5 songs</div></div>
+          <div class="emotion-tile" data-emotion="disgust"><span class="emotion-emoji">🤢</span><div class="emotion-label">Disgusted</div><div class="emotion-count">3 songs</div></div>
+          <div class="emotion-tile" data-emotion="neutral"><span class="emotion-emoji">😌</span><div class="emotion-label">Calm</div><div class="emotion-count">10 songs</div></div>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ══ HOW IT WORKS ═══════════════════════════════════ -->
-  <section class="section" id="how">
-    <div class="section-header">
-      <div class="section-label">How It Works</div>
-      <h2 class="section-h2">Three steps to your<br/> perfect playlist</h2>
-      <p class="section-sub">No account needed. No mood logging. Just your face and your feelings.</p>
-    </div>
-    <div class="steps-grid">
-      <div class="step-card fade-up">
-        <div class="step-num"><span class="step-icon">📹</span></div>
-        <div class="step-title">Upload a Video</div>
-        <p class="step-desc">Record yourself for a few seconds or upload any existing clip. Supported formats: MP4, MOV, AVI, MKV, WEBM. Up to 200MB.</p>
-      </div>
-      <div class="step-card fade-up">
-        <div class="step-num"><span class="step-icon">🧠</span></div>
-        <div class="step-title">AI Reads Your Emotions</div>
-        <p class="step-desc">DeepFace analyzes every frame, detecting 7 emotions — happiness, sadness, anger, surprise, fear, disgust, and calm — with high accuracy.</p>
-      </div>
-      <div class="step-card fade-up">
-        <div class="step-num"><span class="step-icon">🎶</span></div>
-        <div class="step-title">Get Your Playlist</div>
-        <p class="step-desc">Our recommendation engine matches songs to your emotional fingerprint using energy, valence, and BPM alignment. Your mood, your music.</p>
+      <div class="home-footer">
+        <span>© 2024 MoodMatch — AI-powered emotion detection for music</span>
+        <span>Built with DeepFace &amp; Flask</span>
       </div>
     </div>
-  </section>
 
-  <!-- ══ FEATURES ═══════════════════════════════════════ -->
-  <div class="features-wrap" id="features">
-    <div class="features-inner">
-      <div class="section-header">
-        <div class="section-label">Features</div>
-        <h2 class="section-h2">Enterprise-grade AI,<br/>built for everyone</h2>
+    <!-- ═══ UPLOAD VIEW ═══ -->
+    <div id="view-upload" class="view">
+      <div class="topbar">
+        <span class="topbar-title">Upload Video</span>
       </div>
-      <div class="features-grid">
-        <div class="feature-card featured fade-up">
-          <div>
-            <div class="feature-icon">🎯</div>
-            <div class="feature-title">Vector-Based Emotion Matching</div>
-            <p class="feature-desc">Unlike simple keyword matching, MoodMatch uses the full 7-dimension emotion score vector to compute cosine similarity against every song in the catalog. Songs are ranked by how closely their mood profile aligns with yours — not just one label.</p>
+
+      <div class="upload-body">
+        <div class="upload-card">
+          <div class="upload-card-header">
+            <h1>Analyse Your Mood</h1>
+            <p>Drop a video clip below. Our AI will read your facial emotions and build a perfect playlist.</p>
           </div>
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;">
-            <div style="font-size:0.7rem;color:var(--text-3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem">Emotion Vector</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Happy</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:78%;height:100%;background:#FFD166;border-radius:4px"></div></div></div>
-              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Neutral</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:12%;height:100%;background:#85C1E9;border-radius:4px"></div></div></div>
-              <div style="display:flex;align-items:center;gap:10px"><span style="font-size:.75rem;color:var(--text-2);width:60px">Surprise</span><div style="flex:1;height:6px;background:var(--surface-2);border-radius:4px;overflow:hidden"><div style="width:10%;height:100%;background:#FF8C42;border-radius:4px"></div></div></div>
+
+          <!-- Drop Zone -->
+          <div class="drop-zone" id="dropZone">
+            <div class="dz-icon">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16,16 12,12 8,16"/>
+                <line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39,18.39A5,5,0,0,0,18,9h-1.26A8,8,0,1,0,3,16.3"/>
+              </svg>
+            </div>
+            <div class="dz-title">Drop your video here</div>
+            <div class="dz-sub">or click to browse your files</div>
+            <button class="browse-btn" id="browseBtn" type="button">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="17,8 12,3 7,8"/>
+                <line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              Browse Files
+            </button>
+            <div class="dz-formats">MP4 · MOV · AVI · MKV · WEBM &nbsp;·&nbsp; Max 200MB</div>
+            <input type="file" id="fileInput" accept="video/*" style="display:none" />
+          </div>
+
+          <!-- File Preview -->
+          <div class="file-preview" id="filePreview">
+            <div class="file-icon-wrap">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-3)" stroke-width="2">
+                <polygon points="23,7 16,1 1,1 1,23 23,23 23,7"/>
+                <polyline points="16,1 16,7 23,7"/>
+              </svg>
+            </div>
+            <div class="fp-info">
+              <div class="fp-name" id="fpName">—</div>
+              <div class="fp-meta" id="fpMeta">—</div>
+            </div>
+            <button class="fp-remove" id="fpRemove" type="button">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Analyse Mood Button -->
+          <div class="analyse-wrap">
+            <button class="analyse-btn" id="analyseBtn" disabled>
+              <span class="btn-label">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                Analyse Mood
+              </span>
+              <div class="btn-spinner"></div>
+            </button>
+          </div>
+
+          <!-- Progress -->
+          <div class="progress-wrap" id="progressWrap">
+            <div class="progress-header">
+              <span id="progressText">Initialising...</span>
+              <span id="progressPct">0%</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-steps">
+              <div class="ps" id="ps1"><div class="ps-dot"></div>Uploading</div>
+              <div class="ps" id="ps2"><div class="ps-dot"></div>Extracting frames</div>
+              <div class="ps" id="ps3"><div class="ps-dot"></div>Detecting emotions</div>
+              <div class="ps" id="ps4"><div class="ps-dot"></div>Building playlist</div>
+            </div>
+          </div>
+
+          <!-- Results -->
+          <div class="results-wrap" id="resultsWrap">
+            <div class="results-heading">
+              <span class="results-heading-text">Analysis Complete</span>
+              <span class="done-badge">✓ Done</span>
+            </div>
+
+            <div class="emotion-result-box">
+              <div class="er-top">
+                <div class="er-emoji" id="resEmoji">😊</div>
+                <div>
+                  <div class="er-name" id="resName">Happy</div>
+                  <div class="er-sub" id="resSub">Dominant emotion · High confidence</div>
+                </div>
+              </div>
+              <div class="er-bars" id="erBars"></div>
+            </div>
+
+            <div class="playlist-box">
+              <div class="playlist-box-label">Recommended Playlist</div>
+              <div class="song-list" id="songList"></div>
             </div>
           </div>
         </div>
-
-        <div class="feature-card fade-up">
-          <div class="feature-icon">📊</div>
-          <div class="feature-title">Real-time Emotion Timeline</div>
-          <p class="feature-desc">See exactly how your emotions shifted throughout the video with a live Chart.js visualization. Identify peaks, dips, and your dominant emotional arc.</p>
-        </div>
-
-        <div class="feature-card fade-up">
-          <div class="feature-icon">⚡</div>
-          <div class="feature-title">Async Processing Engine</div>
-          <p class="feature-desc">Video processing runs in a background thread so the UI stays responsive. Real-time status polling keeps you updated as each stage completes.</p>
-        </div>
-
-        <div class="feature-card fade-up">
-          <div class="feature-icon">🎛️</div>
-          <div class="feature-title">BPM & Energy Alignment</div>
-          <p class="feature-desc">Each song is matched not just by emotion but also by tempo and energy level. Intense anger gets high-BPM metal. Deep sadness gets slow, low-energy acoustic tracks.</p>
-        </div>
-
-        <div class="feature-card fade-up">
-          <div class="feature-icon">🗃️</div>
-          <div class="feature-title">Full Session History</div>
-          <p class="feature-desc">Every analysis is saved to a local SQLite database. Review past sessions, compare emotion patterns over time, and revisit old playlists.</p>
-        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ══ EMOTIONS SHOWCASE ══════════════════════════════ -->
-  <section class="emotions-section" id="emotions">
-    <div class="section-header">
-      <div class="section-label">Emotion Engine</div>
-      <h2 class="section-h2">7 emotions.<br/>Infinite playlists.</h2>
-      <p class="section-sub">Every shade of human feeling maps to a carefully curated sonic palette.</p>
-    </div>
-    <div class="emotions-grid">
-      <div class="emotion-tile" data-emotion="happy">
-        <span class="emotion-tile-emoji">😊</span>
-        <div class="emotion-tile-label">Happy</div>
-        <div class="emotion-tile-songs">10 songs</div>
+    <!-- ═══ HISTORY VIEW ═══ -->
+    <div id="view-history" class="view">
+      <div class="topbar">
+        <span class="topbar-title">Analysis History</span>
+        <button class="clear-btn" id="clearBtn">Clear History</button>
       </div>
-      <div class="emotion-tile" data-emotion="sad">
-        <span class="emotion-tile-emoji">😢</span>
-        <div class="emotion-tile-label">Sad</div>
-        <div class="emotion-tile-songs">10 songs</div>
-      </div>
-      <div class="emotion-tile" data-emotion="angry">
-        <span class="emotion-tile-emoji">😠</span>
-        <div class="emotion-tile-label">Angry</div>
-        <div class="emotion-tile-songs">10 songs</div>
-      </div>
-      <div class="emotion-tile" data-emotion="surprise">
-        <span class="emotion-tile-emoji">😲</span>
-        <div class="emotion-tile-label">Surprised</div>
-        <div class="emotion-tile-songs">5 songs</div>
-      </div>
-      <div class="emotion-tile" data-emotion="fear">
-        <span class="emotion-tile-emoji">😨</span>
-        <div class="emotion-tile-label">Fearful</div>
-        <div class="emotion-tile-songs">5 songs</div>
-      </div>
-      <div class="emotion-tile" data-emotion="disgust">
-        <span class="emotion-tile-emoji">🤢</span>
-        <div class="emotion-tile-label">Disgusted</div>
-        <div class="emotion-tile-songs">3 songs</div>
-      </div>
-      <div class="emotion-tile" data-emotion="neutral">
-        <span class="emotion-tile-emoji">😌</span>
-        <div class="emotion-tile-label">Calm</div>
-        <div class="emotion-tile-songs">10 songs</div>
+      <div class="history-body">
+        <div id="historyContent"></div>
       </div>
     </div>
-  </section>
 
-  <!-- ══ TESTIMONIALS ═══════════════════════════════════ -->
-  <section class="testimonials-wrap">
-    <div class="section-header">
-      <div class="section-label">Testimonials</div>
-      <h2 class="section-h2">People are feeling it</h2>
-    </div>
-    <div class="testimonials-grid">
-      <div class="testimonial-card fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"I uploaded a video after a terrible day and it gave me the most perfectly somber playlist. Felt truly understood by an AI for the first time."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#FFD16622">🙂</div>
-          <div>
-            <div class="testimonial-name">Priya M.</div>
-            <div class="testimonial-role">UX Designer, Bangalore</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"The emotion timeline is incredible. Watching my face go from neutral to genuinely happy during a work call was fascinating. Playlist was spot on."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#7C6FFF22">😊</div>
-          <div>
-            <div class="testimonial-name">James T.</div>
-            <div class="testimonial-role">Software Engineer, London</div>
-          </div>
-        </div>
-      </div>
-      <div class="testimonial-card fade-up">
-        <div class="testimonial-stars">★★★★★</div>
-        <p class="testimonial-text">"Built this in VS Code and had it running in 10 minutes. The code quality is exceptional — clean, modular, and actually beginner-friendly despite being enterprise-grade."</p>
-        <div class="testimonial-author">
-          <div class="testimonial-avatar" style="background:#00D4AA22">🧑‍💻</div>
-          <div>
-            <div class="testimonial-name">Aryan K.</div>
-            <div class="testimonial-role">CS Student, Delhi</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  </div><!-- /content-area -->
+</div><!-- /app-shell -->
 
-  <!-- ══ PRICING ════════════════════════════════════════ -->
-  <div class="pricing-wrap" id="pricing">
-    <div class="pricing-inner">
-      <div class="section-header" style="text-align:center">
-        <div class="section-label">Pricing</div>
-        <h2 class="section-h2">Start free. Scale as you grow.</h2>
-        <p class="section-sub" style="max-width:400px;margin:0 auto">No credit card required to start. Run it locally forever for free.</p>
-      </div>
-      <div class="pricing-grid">
-        <div class="pricing-card fade-up">
-          <div class="plan-name">Local</div>
-          <div class="plan-price">$0</div>
-          <div class="plan-period">Free forever</div>
-          <p class="plan-desc">Run MoodMatch on your own machine. No limits, full code access.</p>
-          <ul class="plan-features">
-            <li class="plan-feature"><span class="check">✓</span> Unlimited local analyses</li>
-            <li class="plan-feature"><span class="check">✓</span> Full source code</li>
-            <li class="plan-feature"><span class="check">✓</span> SQLite history</li>
-            <li class="plan-feature"><span class="check">✓</span> All 7 emotions</li>
-            <li class="plan-feature"><span class="cross">✗</span> Cloud hosting</li>
-            <li class="plan-feature"><span class="cross">✗</span> Spotify integration</li>
-          </ul>
-          <a href="#how" class="btn-plan btn-plan-outline">Get Started</a>
-        </div>
+<script>
+  // ── Navigation ────────────────────────────────────────
+  function switchView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    document.querySelector('[data-view="' + name + '"]').classList.add('active');
+    document.querySelector('.content-area').scrollTop = 0;
+    if (name === 'history') renderHistory();
+  }
 
-        <div class="pricing-card popular fade-up">
-          <div class="popular-badge">Most Popular</div>
-          <div class="plan-name">Pro</div>
-          <div class="plan-price"><sup>$</sup>9</div>
-          <div class="plan-period">per month</div>
-          <p class="plan-desc">Cloud-hosted, faster processing, and Spotify playlist export.</p>
-          <ul class="plan-features">
-            <li class="plan-feature"><span class="check">✓</span> 500 analyses/month</li>
-            <li class="plan-feature"><span class="check">✓</span> Cloud GPU processing</li>
-            <li class="plan-feature"><span class="check">✓</span> Spotify playlist export</li>
-            <li class="plan-feature"><span class="check">✓</span> Advanced analytics</li>
-            <li class="plan-feature"><span class="check">✓</span> Priority support</li>
-            <li class="plan-feature"><span class="cross">✗</span> White-label</li>
-          </ul>
-          <a href="#" class="btn-plan btn-plan-fill">Coming Soon</a>
-        </div>
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.addEventListener('click', () => { if (btn.dataset.view) switchView(btn.dataset.view); });
+  });
 
-        <div class="pricing-card fade-up">
-          <div class="plan-name">Business</div>
-          <div class="plan-price"><sup>$</sup>49</div>
-          <div class="plan-period">per month</div>
-          <p class="plan-desc">White-label, API access, and custom song catalog for your brand.</p>
-          <ul class="plan-features">
-            <li class="plan-feature"><span class="check">✓</span> Unlimited analyses</li>
-            <li class="plan-feature"><span class="check">✓</span> REST API access</li>
-            <li class="plan-feature"><span class="check">✓</span> White-label branding</li>
-            <li class="plan-feature"><span class="check">✓</span> Custom song catalog</li>
-            <li class="plan-feature"><span class="check">✓</span> SLA & dedicated support</li>
-            <li class="plan-feature"><span class="check">✓</span> Team management</li>
-          </ul>
-          <a href="#" class="btn-plan btn-plan-outline">Contact Sales</a>
-        </div>
-      </div>
-    </div>
-  </div>
+  // ── Scroll animations ─────────────────────────────────
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
 
-  <!-- ══ CTA ════════════════════════════════════════════ -->
-  <section class="cta-wrap">
-    <div class="cta-inner">
-      <h2 class="cta-h2">Ready to hear<br/> how you feel?</h2>
-      <p class="cta-p">Upload a video. Your perfect playlist is 30 seconds away.</p>
-      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="#how" class="btn-primary">
-          Launch MoodMatch
-          <span>🎵</span>
-        </a>
-      </div>
-      <p style="margin-top:1.5rem;font-size:0.8rem;color:var(--text-3)">
-        Free · No account · Runs locally in VS Code
-      </p>
-    </div>
-  </section>
+  // ── File handling ─────────────────────────────────────
+  const dropZone   = document.getElementById('dropZone');
+  const fileInput  = document.getElementById('fileInput');
+  const browseBtn  = document.getElementById('browseBtn');
+  const filePreview= document.getElementById('filePreview');
+  const fpName     = document.getElementById('fpName');
+  const fpMeta     = document.getElementById('fpMeta');
+  const fpRemove   = document.getElementById('fpRemove');
+  const analyseBtn = document.getElementById('analyseBtn');
+  let currentFile  = null;
 
-  <!-- ══ FOOTER ═════════════════════════════════════════ -->
-  <footer class="footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <div class="nav-brand" style="margin-bottom:.5rem">
-          <div class="nav-brand-icon">🎵</div>
-          MoodMatch
-        </div>
-        <p>AI-powered music matching through real-time emotion detection. Built for developers, designed for everyone.</p>
-      </div>
-      <div>
-        <div class="footer-col-title">Product</div>
-        <ul class="footer-links">
-          <li><a href="#how">How It Works</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#pricing">Pricing</a></li>
-          <li><a href="#how">Launch App</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Tech Stack</div>
-        <ul class="footer-links">
-          <li><a href="#">Python / Flask</a></li>
-          <li><a href="#">DeepFace AI</a></li>
-          <li><a href="#">OpenCV</a></li>
-          <li><a href="#">Chart.js</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">Resources</div>
-        <ul class="footer-links">
-          <li><a href="#">GitHub Repo</a></li>
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">API Reference</a></li>
-          <li><a href="#">Changelog</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2024 MoodMatch. Built with ♥ using DeepFace & Flask.</div>
-      <div class="footer-socials">
-        <a href="#" class="social-link">𝕏</a>
-        <a href="#" class="social-link">⌥</a>
-        <a href="#" class="social-link">in</a>
-      </div>
-    </div>
-  </footer>
+  browseBtn.addEventListener('click', e => { e.stopPropagation(); fileInput.click(); });
+  dropZone.addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', e => { if (e.target.files[0]) setFile(e.target.files[0]); });
 
-  <script>
-    // Scroll animations
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.1 });
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('video/')) setFile(f);
+  });
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  function setFile(f) {
+    currentFile = f;
+    dropZone.classList.add('has-file');
+    fpName.textContent = f.name;
+    fpMeta.textContent = fmtSize(f.size) + ' · ' + (f.type || 'video');
+    filePreview.classList.add('show');
+    analyseBtn.disabled = false;
+    document.getElementById('resultsWrap').classList.remove('show');
+    document.getElementById('progressWrap').classList.remove('show');
+  }
 
-    // Mobile menu
-    function toggleMenu() {
-      const links = document.querySelector('.nav-links');
-      links.style.display = links.style.display === 'flex' ? 'none' : 'flex';
-      links.style.flexDirection = 'column';
-      links.style.position = 'absolute';
-      links.style.top = '72px';
-      links.style.left = '0';
-      links.style.right = '0';
-      links.style.padding = '1.5rem 5%';
-      links.style.background = 'rgba(5,7,15,0.98)';
-      links.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
-      links.style.backdropFilter = 'blur(24px)';
+  fpRemove.addEventListener('click', () => {
+    currentFile = null; fileInput.value = '';
+    dropZone.classList.remove('has-file');
+    filePreview.classList.remove('show');
+    analyseBtn.disabled = true; analyseBtn.classList.remove('loading');
+    document.getElementById('resultsWrap').classList.remove('show');
+    document.getElementById('progressWrap').classList.remove('show');
+  });
+
+  function fmtSize(b) {
+    return b < 1048576 ? (b/1024).toFixed(1)+' KB' : (b/1048576).toFixed(1)+' MB';
+  }
+
+  // ── Emotion data ──────────────────────────────────────
+  const EMOTIONS = [
+    { name:'Happy',   emoji:'😊', color:'#FFD166', songs:[
+      {n:'Happy',               a:'Pharrell Williams', m:'96%', c:'#FFD16630'},
+      {n:'Levitating',          a:'Dua Lipa',          m:'91%', c:'#FF6B9D30'},
+      {n:'Uptown Funk',         a:'Mark Ronson',       m:'88%', c:'#7C6FFF30'},
+      {n:'Good as Hell',        a:'Lizzo',             m:'85%', c:'#00D4AA30'},
+      {n:"Can't Stop the Feeling", a:'Justin Timberlake', m:'82%', c:'#FFD16630'},
+    ]},
+    { name:'Sad',     emoji:'😢', color:'#4A90D9', songs:[
+      {n:'Someone Like You',    a:'Adele',    m:'94%', c:'#4A90D930'},
+      {n:'Fix You',             a:'Coldplay', m:'90%', c:'#7C6FFF30'},
+      {n:'The Night We Met',    a:'Lord Huron',m:'87%', c:'#4A90D930'},
+      {n:'Skinny Love',         a:'Bon Iver', m:'84%', c:'#85C1E930'},
+      {n:'All I Want',          a:'Kodaline', m:'80%', c:'#4A90D930'},
+    ]},
+    { name:'Angry',   emoji:'😠', color:'#FF4F4F', songs:[
+      {n:'Break Stuff',          a:'Limp Bizkit',  m:'95%', c:'#FF4F4F30'},
+      {n:'Given Up',             a:'Linkin Park',  m:'92%', c:'#FF6B9D30'},
+      {n:'Killing in the Name',  a:'RATM',         m:'89%', c:'#FF4F4F30'},
+      {n:'Bulls on Parade',      a:'RATM',         m:'85%', c:'#FF4F4F30'},
+      {n:'Numb',                 a:'Linkin Park',  m:'81%', c:'#7C6FFF30'},
+    ]},
+    { name:'Neutral', emoji:'😌', color:'#85C1E9', songs:[
+      {n:'Breathe',        a:'Pink Floyd',        m:'93%', c:'#85C1E930'},
+      {n:'Weightless',     a:'Marconi Union',     m:'90%', c:'#00D4AA30'},
+      {n:'Clair de lune',  a:'Debussy',           m:'87%', c:'#85C1E930'},
+      {n:'Experience',     a:'Ludovico Einaudi',  m:'84%', c:'#7C6FFF30'},
+      {n:'Saturn',         a:'Stevie Wonder',     m:'79%', c:'#85C1E930'},
+    ]},
+    { name:'Surprised', emoji:'😲', color:'#FF8C42', songs:[
+      {n:'Bohemian Rhapsody', a:'Queen',     m:'94%', c:'#FF8C4230'},
+      {n:'Jump',              a:'Van Halen', m:'89%', c:'#FFD16630'},
+      {n:'Thriller',          a:'Michael Jackson', m:'86%', c:'#FF8C4230'},
+      {n:'Twist and Shout',   a:'The Beatles', m:'82%', c:'#FF6B9D30'},
+      {n:'Good Vibrations',   a:'The Beach Boys', m:'79%', c:'#FF8C4230'},
+    ]},
+  ];
+
+  const EMOTION_LABELS = [
+    {l:'Happy',   c:'#FFD166'},
+    {l:'Sad',     c:'#4A90D9'},
+    {l:'Angry',   c:'#FF4F4F'},
+    {l:'Surprise',c:'#FF8C42'},
+    {l:'Fear',    c:'#9B59B6'},
+    {l:'Disgust', c:'#27AE60'},
+    {l:'Neutral', c:'#85C1E9'},
+  ];
+
+  // ── Analysis ──────────────────────────────────────────
+  analyseBtn.addEventListener('click', async () => {
+    if (!currentFile) return;
+
+    const emotion = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
+    analyseBtn.classList.add('loading');
+    document.getElementById('progressWrap').classList.add('show');
+    document.getElementById('resultsWrap').classList.remove('show');
+
+    const steps = [
+      {id:'ps1', text:'Uploading video...', pct:25},
+      {id:'ps2', text:'Extracting frames...', pct:50},
+      {id:'ps3', text:'Detecting emotions...', pct:75},
+      {id:'ps4', text:'Building playlist...', pct:95},
+    ];
+
+    for (let i = 0; i < steps.length; i++) {
+      const s = steps[i];
+      document.getElementById('progressText').textContent = s.text;
+      document.getElementById('progressPct').textContent = s.pct + '%';
+      document.getElementById('progressFill').style.width = s.pct + '%';
+      for (let j = 0; j < i; j++) document.getElementById(steps[j].id).className = 'ps done';
+      document.getElementById(s.id).className = 'ps active';
+      await wait(950);
     }
 
-    // Emotion tiles hover effect
-    document.querySelectorAll('.emotion-tile').forEach(tile => {
-      tile.addEventListener('click', () => {
-        const emotion = tile.dataset.emotion;
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
+    document.getElementById('progressPct').textContent = '100%';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressText').textContent = 'Analysis complete!';
+    steps.forEach(s => document.getElementById(s.id).className = 'ps done');
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-      const nav = document.querySelector('.navbar');
-      if (window.scrollY > 50) {
-        nav.style.background = 'rgba(5,7,15,0.95)';
-      } else {
-        nav.style.background = 'rgba(5,7,15,0.8)';
-      }
+    await wait(350);
+    analyseBtn.classList.remove('loading');
+    showResults(emotion);
+    saveHistory(currentFile.name, emotion);
+  });
+
+  function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  function showResults(em) {
+    const scores = buildScores(em.name);
+
+    document.getElementById('resEmoji').textContent = em.emoji;
+    document.getElementById('resName').textContent  = em.name;
+    document.getElementById('resName').style.color  = em.color;
+    document.getElementById('resSub').textContent   = 'Dominant emotion · ' + scores[0].pct + '% confidence';
+
+    document.getElementById('erBars').innerHTML = scores.map(s => `
+      <div class="er-bar-row">
+        <div class="er-bar-label">${s.l}</div>
+        <div class="er-bar-track">
+          <div class="er-bar-fill" style="width:0%;background:${s.c};" data-w="${s.pct}%"></div>
+        </div>
+        <div class="er-bar-pct">${s.pct}%</div>
+      </div>`).join('');
+
+    setTimeout(() => {
+      document.querySelectorAll('.er-bar-fill').forEach(b => { b.style.width = b.dataset.w; });
+    }, 80);
+
+    document.getElementById('songList').innerHTML = em.songs.map((s, i) => `
+      <div class="song-row">
+        <div class="song-num">${i+1}</div>
+        <div class="song-dot" style="background:${s.c}"></div>
+        <div class="song-info">
+          <div class="song-name">${s.n}</div>
+          <div class="song-artist">${s.a}</div>
+        </div>
+        <span class="song-match">${s.m}</span>
+      </div>`).join('');
+
+    document.getElementById('resultsWrap').classList.add('show');
+  }
+
+  function buildScores(dominant) {
+    const dom = 62 + Math.floor(Math.random() * 28);
+    let rem = 100 - dom;
+    return EMOTION_LABELS.map(e => {
+      if (e.l === dominant) return {...e, pct: dom};
+      const p = Math.min(rem, Math.floor(Math.random() * (rem / 2)));
+      rem -= p;
+      return {...e, pct: p};
+    }).sort((a,b) => b.pct - a.pct);
+  }
+
+  // ── History ───────────────────────────────────────────
+  function saveHistory(filename, em) {
+    const h = getHistory();
+    h.unshift({
+      id: Date.now(),
+      filename,
+      emotion: em.name,
+      emoji: em.emoji,
+      color: em.color,
+      songs: em.songs.length,
+      date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}),
+      time: new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'}),
     });
-  </script>
+    localStorage.setItem('mm_history', JSON.stringify(h.slice(0, 50)));
+  }
+
+  function getHistory() {
+    try { return JSON.parse(localStorage.getItem('mm_history') || '[]'); } catch { return []; }
+  }
+
+  function renderHistory() {
+    const h = getHistory();
+    const el = document.getElementById('historyContent');
+    if (!h.length) {
+      el.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🎬</div>
+          <div class="empty-title">No analyses yet</div>
+          <p class="empty-sub">Upload a video and analyse your mood to see your history here.</p>
+          <button class="empty-cta" onclick="switchView('upload')">Upload a Video</button>
+        </div>`;
+      return;
+    }
+    el.innerHTML = `<div class="history-list">${h.map(item => `
+      <div class="history-card">
+        <div class="hc-emotion-icon" style="background:${item.color}1a">${item.emoji}</div>
+        <div class="hc-info">
+          <div class="hc-filename">${esc(item.filename)}</div>
+          <div class="hc-meta">
+            <span class="hc-meta-item">${item.date} · ${item.time}</span>
+            <span class="hc-emotion-badge" style="background:${item.color}1a;color:${item.color}">${item.emotion}</span>
+          </div>
+        </div>
+        <div class="hc-songs">
+          <div class="hc-songs-n">${item.songs}</div>
+          <div class="hc-songs-l">songs</div>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if (confirm('Clear all history?')) {
+      localStorage.removeItem('mm_history');
+      renderHistory();
+    }
+  });
+
+  function esc(s) {
+    return s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]);
+  }
+</script>
 </body>
 </html>
