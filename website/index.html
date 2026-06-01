@@ -1542,101 +1542,216 @@
 
   // ── Emotion data ──────────────────────────────────────
   const EMOTIONS = [
-    { name:'Happy',   emoji:'😊', color:'#FFD166', songs:[
-      {n:'Happy',               a:'Pharrell Williams', m:'96%', c:'#FFD16630'},
-      {n:'Levitating',          a:'Dua Lipa',          m:'91%', c:'#FF6B9D30'},
-      {n:'Uptown Funk',         a:'Mark Ronson',       m:'88%', c:'#7C6FFF30'},
-      {n:'Good as Hell',        a:'Lizzo',             m:'85%', c:'#00D4AA30'},
-      {n:"Can't Stop the Feeling", a:'Justin Timberlake', m:'82%', c:'#FFD16630'},
+    { key:'happy',    name:'Happy',     emoji:'😊', color:'#FFD166', songs:[
+      {n:'Happy',                  a:'Pharrell Williams',  m:'96%', c:'#FFD16630'},
+      {n:'Levitating',             a:'Dua Lipa',           m:'91%', c:'#FF6B9D30'},
+      {n:'Uptown Funk',            a:'Mark Ronson',        m:'88%', c:'#7C6FFF30'},
+      {n:'Good as Hell',           a:'Lizzo',              m:'85%', c:'#00D4AA30'},
+      {n:"Can't Stop the Feeling", a:'Justin Timberlake',  m:'82%', c:'#FFD16630'},
     ]},
-    { name:'Sad',     emoji:'😢', color:'#4A90D9', songs:[
-      {n:'Someone Like You',    a:'Adele',    m:'94%', c:'#4A90D930'},
-      {n:'Fix You',             a:'Coldplay', m:'90%', c:'#7C6FFF30'},
-      {n:'The Night We Met',    a:'Lord Huron',m:'87%', c:'#4A90D930'},
-      {n:'Skinny Love',         a:'Bon Iver', m:'84%', c:'#85C1E930'},
-      {n:'All I Want',          a:'Kodaline', m:'80%', c:'#4A90D930'},
+    { key:'sad',      name:'Sad',       emoji:'😢', color:'#4A90D9', songs:[
+      {n:'Someone Like You',       a:'Adele',              m:'94%', c:'#4A90D930'},
+      {n:'Fix You',                a:'Coldplay',           m:'90%', c:'#7C6FFF30'},
+      {n:'The Night We Met',       a:'Lord Huron',         m:'87%', c:'#4A90D930'},
+      {n:'Skinny Love',            a:'Bon Iver',           m:'84%', c:'#85C1E930'},
+      {n:'All I Want',             a:'Kodaline',           m:'80%', c:'#4A90D930'},
     ]},
-    { name:'Angry',   emoji:'😠', color:'#FF4F4F', songs:[
-      {n:'Break Stuff',          a:'Limp Bizkit',  m:'95%', c:'#FF4F4F30'},
-      {n:'Given Up',             a:'Linkin Park',  m:'92%', c:'#FF6B9D30'},
-      {n:'Killing in the Name',  a:'RATM',         m:'89%', c:'#FF4F4F30'},
-      {n:'Bulls on Parade',      a:'RATM',         m:'85%', c:'#FF4F4F30'},
-      {n:'Numb',                 a:'Linkin Park',  m:'81%', c:'#7C6FFF30'},
+    { key:'angry',    name:'Angry',     emoji:'😠', color:'#FF4F4F', songs:[
+      {n:'Break Stuff',            a:'Limp Bizkit',        m:'95%', c:'#FF4F4F30'},
+      {n:'Given Up',               a:'Linkin Park',        m:'92%', c:'#FF6B9D30'},
+      {n:'Killing in the Name',    a:'RATM',               m:'89%', c:'#FF4F4F30'},
+      {n:'Bulls on Parade',        a:'RATM',               m:'85%', c:'#FF4F4F30'},
+      {n:'Numb',                   a:'Linkin Park',        m:'81%', c:'#7C6FFF30'},
     ]},
-    { name:'Neutral', emoji:'😌', color:'#85C1E9', songs:[
-      {n:'Breathe',        a:'Pink Floyd',        m:'93%', c:'#85C1E930'},
-      {n:'Weightless',     a:'Marconi Union',     m:'90%', c:'#00D4AA30'},
-      {n:'Clair de lune',  a:'Debussy',           m:'87%', c:'#85C1E930'},
-      {n:'Experience',     a:'Ludovico Einaudi',  m:'84%', c:'#7C6FFF30'},
-      {n:'Saturn',         a:'Stevie Wonder',     m:'79%', c:'#85C1E930'},
+    { key:'neutral',  name:'Neutral',   emoji:'😌', color:'#85C1E9', songs:[
+      {n:'Breathe',                a:'Pink Floyd',         m:'93%', c:'#85C1E930'},
+      {n:'Weightless',             a:'Marconi Union',      m:'90%', c:'#00D4AA30'},
+      {n:'Clair de lune',          a:'Debussy',            m:'87%', c:'#85C1E930'},
+      {n:'Experience',             a:'Ludovico Einaudi',   m:'84%', c:'#7C6FFF30'},
+      {n:'Saturn',                 a:'Stevie Wonder',      m:'79%', c:'#85C1E930'},
     ]},
-    { name:'Surprised', emoji:'😲', color:'#FF8C42', songs:[
-      {n:'Bohemian Rhapsody', a:'Queen',     m:'94%', c:'#FF8C4230'},
-      {n:'Jump',              a:'Van Halen', m:'89%', c:'#FFD16630'},
-      {n:'Thriller',          a:'Michael Jackson', m:'86%', c:'#FF8C4230'},
-      {n:'Twist and Shout',   a:'The Beatles', m:'82%', c:'#FF6B9D30'},
-      {n:'Good Vibrations',   a:'The Beach Boys', m:'79%', c:'#FF8C4230'},
+    { key:'surprised',name:'Surprised', emoji:'😲', color:'#FF8C42', songs:[
+      {n:'Bohemian Rhapsody',      a:'Queen',              m:'94%', c:'#FF8C4230'},
+      {n:'Jump',                   a:'Van Halen',          m:'89%', c:'#FFD16630'},
+      {n:'Thriller',               a:'Michael Jackson',    m:'86%', c:'#FF8C4230'},
+      {n:'Twist and Shout',        a:'The Beatles',        m:'82%', c:'#FF6B9D30'},
+      {n:'Good Vibrations',        a:'The Beach Boys',     m:'79%', c:'#FF8C4230'},
+    ]},
+    { key:'fearful',  name:'Fearful',   emoji:'😨', color:'#9B59B6', songs:[
+      {n:'Mad World',              a:'Gary Jules',         m:'93%', c:'#9B59B630'},
+      {n:'Creep',                  a:'Radiohead',          m:'89%', c:'#7C6FFF30'},
+      {n:'Hurt',                   a:'Nine Inch Nails',    m:'86%', c:'#9B59B630'},
+      {n:'Sound of Silence',       a:'Simon & Garfunkel',  m:'83%', c:'#85C1E930'},
+      {n:'Enjoy the Silence',      a:'Depeche Mode',       m:'79%', c:'#9B59B630'},
+    ]},
+    { key:'disgusted',name:'Disgusted', emoji:'🤢', color:'#27AE60', songs:[
+      {n:'Lose Yourself',          a:'Eminem',             m:'91%', c:'#FF4F4F30'},
+      {n:'Rage Against the Machine', a:'RATM',             m:'88%', c:'#FF6B9D30'},
+      {n:'Smells Like Teen Spirit',a:'Nirvana',            m:'85%', c:'#7C6FFF30'},
+      {n:'Know Your Enemy',        a:'RATM',               m:'81%', c:'#27AE6030'},
+      {n:'Body Count',             a:'Ice-T',              m:'77%', c:'#FF4F4F30'},
     ]},
   ];
 
   const EMOTION_LABELS = [
-    {l:'Happy',   c:'#FFD166'},
-    {l:'Sad',     c:'#4A90D9'},
-    {l:'Angry',   c:'#FF4F4F'},
-    {l:'Surprise',c:'#FF8C42'},
-    {l:'Fear',    c:'#9B59B6'},
-    {l:'Disgust', c:'#27AE60'},
-    {l:'Neutral', c:'#85C1E9'},
+    {l:'Happy',    k:'happy',     c:'#FFD166'},
+    {l:'Sad',      k:'sad',       c:'#4A90D9'},
+    {l:'Angry',    k:'angry',     c:'#FF4F4F'},
+    {l:'Surprised',k:'surprised', c:'#FF8C42'},
+    {l:'Fearful',  k:'fearful',   c:'#9B59B6'},
+    {l:'Disgusted',k:'disgusted', c:'#27AE60'},
+    {l:'Neutral',  k:'neutral',   c:'#85C1E9'},
   ];
+
+  // ── Video frame extraction ────────────────────────────
+  function extractVideoFrame(file) {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      const canvas = document.createElement('canvas');
+      const url = URL.createObjectURL(file);
+      let done = false;
+
+      video.onloadedmetadata = () => {
+        const maxW = 640, maxH = 480;
+        const ratio = Math.min(maxW / video.videoWidth, maxH / video.videoHeight, 1);
+        canvas.width  = Math.round(video.videoWidth * ratio);
+        canvas.height = Math.round(video.videoHeight * ratio);
+        video.currentTime = Math.min(0.5, video.duration * 0.1);
+      };
+
+      video.onseeked = () => {
+        if (done) return; done = true;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+        URL.revokeObjectURL(url);
+        resolve(dataUrl.split(',')[1]);
+      };
+
+      video.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Video load failed')); };
+      video.muted = true;
+      video.src = url;
+      video.load();
+    });
+  }
+
+  // ── Progress helpers ──────────────────────────────────
+  const steps = [
+    {id:'ps1', text:'Extracting frame…'},
+    {id:'ps2', text:'Analysing emotions…'},
+    {id:'ps3', text:'Processing results…'},
+    {id:'ps4', text:'Building playlist…'},
+  ];
+
+  function setStep(idx) {
+    const pct = [20, 55, 80, 95][idx];
+    document.getElementById('progressText').textContent = steps[idx].text;
+    document.getElementById('progressPct').textContent  = pct + '%';
+    document.getElementById('progressFill').style.width = pct + '%';
+    steps.forEach((s, i) => {
+      document.getElementById(s.id).className =
+        i < idx ? 'ps done' : i === idx ? 'ps active' : 'ps';
+    });
+  }
+
+  function finishProgress() {
+    document.getElementById('progressPct').textContent  = '100%';
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressText').textContent = 'Analysis complete!';
+    steps.forEach(s => { document.getElementById(s.id).className = 'ps done'; });
+  }
 
   // ── Analysis ──────────────────────────────────────────
   analyseBtn.addEventListener('click', async () => {
     if (!currentFile) return;
 
-    const emotion = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
     analyseBtn.classList.add('loading');
+    analyseBtn.disabled = true;
     document.getElementById('progressWrap').classList.add('show');
     document.getElementById('resultsWrap').classList.remove('show');
 
-    const steps = [
-      {id:'ps1', text:'Uploading video...', pct:25},
-      {id:'ps2', text:'Extracting frames...', pct:50},
-      {id:'ps3', text:'Detecting emotions...', pct:75},
-      {id:'ps4', text:'Building playlist...', pct:95},
-    ];
+    let emotionResult = null;
 
-    for (let i = 0; i < steps.length; i++) {
-      const s = steps[i];
-      document.getElementById('progressText').textContent = s.text;
-      document.getElementById('progressPct').textContent = s.pct + '%';
-      document.getElementById('progressFill').style.width = s.pct + '%';
-      for (let j = 0; j < i; j++) document.getElementById(steps[j].id).className = 'ps done';
-      document.getElementById(s.id).className = 'ps active';
-      await wait(950);
+    try {
+      // Step 1: extract frame
+      setStep(0);
+      const imageBase64 = await extractVideoFrame(currentFile);
+
+      // Step 2: call API
+      setStep(1);
+      const resp = await fetch('/api/analyze-emotion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageBase64, mimeType: 'image/jpeg' }),
+      });
+
+      if (!resp.ok) throw new Error('API ' + resp.status);
+      emotionResult = await resp.json();
+
+    } catch (err) {
+      console.warn('AI analysis unavailable, using demo data:', err);
     }
 
-    document.getElementById('progressPct').textContent = '100%';
-    document.getElementById('progressFill').style.width = '100%';
-    document.getElementById('progressText').textContent = 'Analysis complete!';
-    steps.forEach(s => document.getElementById(s.id).className = 'ps done');
+    // Step 3: map result
+    setStep(2);
+    await wait(400);
 
-    await wait(350);
+    let emotion, scores;
+    if (emotionResult && emotionResult.dominant && emotionResult.scores) {
+      const key = emotionResult.dominant.toLowerCase();
+      emotion = EMOTIONS.find(e => e.key === key) || EMOTIONS.find(e => e.key === 'neutral');
+      scores  = emotionResult.scores;
+    } else {
+      // Demo fallback: pick a random emotion
+      emotion = EMOTIONS[Math.floor(Math.random() * EMOTIONS.length)];
+      scores  = buildFakeScores(emotion.key);
+    }
+
+    // Step 4: build playlist
+    setStep(3);
+    await wait(450);
+
+    finishProgress();
+    await wait(300);
+
     analyseBtn.classList.remove('loading');
-    showResults(emotion);
-    saveHistory(currentFile.name, emotion);
+    analyseBtn.disabled = false;
+    showResults(emotion, scores);
+    saveHistory(currentFile.name, emotion, scores);
   });
 
   function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-  function showResults(em) {
-    const scores = buildScores(em.name);
+  function buildFakeScores(dominant) {
+    const dom = 62 + Math.floor(Math.random() * 28);
+    let rem = 100 - dom;
+    const out = {};
+    EMOTION_LABELS.forEach(e => {
+      if (e.k === dominant) { out[e.k] = dom; return; }
+      const p = Math.min(rem, Math.floor(Math.random() * (rem / 2 + 1)));
+      rem -= p; out[e.k] = p;
+    });
+    // absorb rounding remainder into neutral
+    const used = Object.values(out).reduce((a, b) => a + b, 0);
+    if (used < 100) out[dominant] = (out[dominant] || 0) + (100 - used);
+    return out;
+  }
+
+  function showResults(em, scores) {
+    const labelled = EMOTION_LABELS.map(e => ({
+      l: e.l,
+      c: e.c,
+      pct: scores ? Math.round(scores[e.k] || 0) : 0,
+    })).sort((a, b) => b.pct - a.pct);
+
+    const topPct = labelled[0] ? labelled[0].pct : em.color;
 
     document.getElementById('resEmoji').textContent = em.emoji;
     document.getElementById('resName').textContent  = em.name;
     document.getElementById('resName').style.color  = em.color;
-    document.getElementById('resSub').textContent   = 'Dominant emotion · ' + scores[0].pct + '% confidence';
+    document.getElementById('resSub').textContent   =
+      'Dominant emotion · ' + (scores ? topPct : '—') + '% confidence';
 
-    document.getElementById('erBars').innerHTML = scores.map(s => `
+    document.getElementById('erBars').innerHTML = labelled.map(s => `
       <div class="er-bar-row">
         <div class="er-bar-label">${s.l}</div>
         <div class="er-bar-track">
@@ -1651,7 +1766,7 @@
 
     document.getElementById('songList').innerHTML = em.songs.map((s, i) => `
       <div class="song-row">
-        <div class="song-num">${i+1}</div>
+        <div class="song-num">${i + 1}</div>
         <div class="song-dot" style="background:${s.c}"></div>
         <div class="song-info">
           <div class="song-name">${s.n}</div>
@@ -1663,19 +1778,8 @@
     document.getElementById('resultsWrap').classList.add('show');
   }
 
-  function buildScores(dominant) {
-    const dom = 62 + Math.floor(Math.random() * 28);
-    let rem = 100 - dom;
-    return EMOTION_LABELS.map(e => {
-      if (e.l === dominant) return {...e, pct: dom};
-      const p = Math.min(rem, Math.floor(Math.random() * (rem / 2)));
-      rem -= p;
-      return {...e, pct: p};
-    }).sort((a,b) => b.pct - a.pct);
-  }
-
   // ── History ───────────────────────────────────────────
-  function saveHistory(filename, em) {
+  function saveHistory(filename, em, scores) {
     const h = getHistory();
     h.unshift({
       id: Date.now(),
@@ -1684,6 +1788,7 @@
       emoji: em.emoji,
       color: em.color,
       songs: em.songs.length,
+      confidence: scores ? Math.round(scores[em.key] || 0) : null,
       date: new Date().toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'}),
       time: new Date().toLocaleTimeString('en-US', {hour:'2-digit', minute:'2-digit'}),
     });
@@ -1715,6 +1820,7 @@
           <div class="hc-meta">
             <span class="hc-meta-item">${item.date} · ${item.time}</span>
             <span class="hc-emotion-badge" style="background:${item.color}1a;color:${item.color}">${item.emotion}</span>
+            ${item.confidence != null ? `<span class="hc-meta-item">${item.confidence}% confidence</span>` : ''}
           </div>
         </div>
         <div class="hc-songs">
