@@ -1153,7 +1153,7 @@
       <a href="#features" class="nav-link">Features</a>
       <a href="#emotions" class="nav-link">Emotions</a>
       <a href="#pricing" class="nav-link">Pricing</a>
-      <a href="http://localhost:5000" class="nav-cta">Launch App →</a>
+      <a href="#how" class="nav-cta">Learn More →</a>
     </div>
     <div class="hamburger" onclick="toggleMenu()">
       <span></span><span></span><span></span>
@@ -1178,8 +1178,8 @@
           in real time and builds a playlist perfectly tuned to how you feel right now.
         </p>
         <div class="hero-actions">
-          <a href="http://localhost:5000" class="btn-primary">
-            Try It Free
+          <a href="#how" class="btn-primary">
+            See How It Works
             <span>→</span>
           </a>
           <a href="#how" class="btn-secondary">
@@ -1476,7 +1476,7 @@
             <li class="plan-feature"><span class="cross">✗</span> Cloud hosting</li>
             <li class="plan-feature"><span class="cross">✗</span> Spotify integration</li>
           </ul>
-          <a href="http://localhost:5000" class="btn-plan btn-plan-outline">Get Started</a>
+          <a href="#how" class="btn-plan btn-plan-outline">Get Started</a>
         </div>
 
         <div class="pricing-card popular fade-up">
@@ -1521,7 +1521,7 @@
       <h2 class="cta-h2">Ready to hear<br/> how you feel?</h2>
       <p class="cta-p">Upload a video. Your perfect playlist is 30 seconds away.</p>
       <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
-        <a href="http://localhost:5000" class="btn-primary">
+        <a href="#how" class="btn-primary">
           Launch MoodMatch
           <span>🎵</span>
         </a>
@@ -1548,7 +1548,7 @@
           <li><a href="#how">How It Works</a></li>
           <li><a href="#features">Features</a></li>
           <li><a href="#pricing">Pricing</a></li>
-          <li><a href="http://localhost:5000">Launch App</a></li>
+          <li><a href="#how">Launch App</a></li>
         </ul>
       </div>
       <div>
@@ -1611,7 +1611,7 @@
     document.querySelectorAll('.emotion-tile').forEach(tile => {
       tile.addEventListener('click', () => {
         const emotion = tile.dataset.emotion;
-        window.open(`http://localhost:5000`, '_blank');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
 
