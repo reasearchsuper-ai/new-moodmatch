@@ -18,12 +18,6 @@ try:
     from deepface import DeepFace
     DEEPFACE_AVAILABLE = True
     logger.info("✅ DeepFace loaded successfully")
-
-    # Pre-load model at startup — not on first request
-    logger.info("⏳ Pre-loading Facenet model into memory...")
-    DeepFace.build_model("Facenet")
-    logger.info("✅ Facenet model ready")
-
 except ImportError:
     DEEPFACE_AVAILABLE = False
     logger.warning("⚠️  DeepFace not available — using mock emotion data for demo")
@@ -58,11 +52,11 @@ class EmotionDetector:
     aggregates results, and returns structured emotion data.
     """
 
-    def __init__(self, sample_rate_fps=0.2, max_frames=10):
+    def __init__(self, sample_rate_fps=1.0, max_frames=60):
         """
         Args:
-            sample_rate_fps: 0.2 = 1 frame every 5 seconds
-            max_frames: 10 frames max — fast enough for free tier
+            sample_rate_fps: How many frames per second to analyze (1 = 1/sec, 0.5 = 1 every 2s)
+            max_frames: Maximum frames to analyze (prevents timeout on long videos)
         """
         self.sample_rate_fps = sample_rate_fps
         self.max_frames = max_frames
@@ -154,8 +148,7 @@ class EmotionDetector:
                 img_path=frame,
                 actions=['emotion'],
                 enforce_detection=False,
-                silent=True,
-                detector_backend="opencv"
+                silent=True
             )
 
             # Handle list or dict result
@@ -272,11 +265,11 @@ class EmotionDetector:
         }
 
 
-# Singleton instance — 10 frames max, 1 frame every 5 seconds
+# Singleton instance
 _detector = None
 
 def get_detector():
     global _detector
     if _detector is None:
-        _detector = EmotionDetector(sample_rate_fps=0.2, max_frames=10)
+        _detector = EmotionDetector(sample_rate_fps=1.0, max_frames=60)
     return _detector
